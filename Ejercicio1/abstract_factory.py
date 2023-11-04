@@ -205,11 +205,15 @@ if __name__ == "__main__":
     El código del cliente puede funcionar con cualquier clase de fábrica concreta.
     """
     datos=pd.read_csv("Ejercicio1/datoslimpios.csv", sep=';', encoding='ISO-8859-1')
-
-    print("Client: Testing client code with the first factory type:")
-    client_code(ConcreteFactory1(),datos)
-
-    print("ffff\n")
-
-    print("Client: Testing the same client code with the second factory type:")
-    client_code(ConcreteFactory2(),datos)
+    print("elige factoria 1(calculos) o 2(graficos)")
+    eleccion=int(input())
+    
+    if eleccion==1:
+        print("Client: Testing client code with the first factory type:")
+        client_code(ConcreteFactory1(),datos)
+    
+    if eleccion==2:
+        print("Client: Testing the same client code with the second factory type:")
+        client_code(ConcreteFactory2(),datos)
+    else:
+        pass
