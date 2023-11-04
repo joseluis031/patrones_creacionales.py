@@ -1,243 +1,231 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
 
+import matplotlib.pyplot as plt
+import numpy as np
 
 class AbstractFactory(ABC):
     """
-    The Abstract Factory interface declares a set of methods that return
-    different abstract products. These products are called a family and are
-    related by a high-level theme or concept. Products of one family are usually
-    able to collaborate among themselves. A family of products may have several
-    variants, but the products of one variant are incompatible with products of
-    another.
+    La interfaz Abstract Factory declara un conjunto de métodos que devuelven
+     diferentes productos abstractos. Estos productos se llaman familia y son
+     relacionados por un tema o concepto de alto nivel. Los productos de una familia suelen ser
+     capaces de colaborar entre sí. Una familia de productos puede tener varios
+     variantes, pero los productos de una variante son incompatibles con los productos de
+     otro.
     """
     @abstractmethod
-    def create_product_a(self) -> AbstractProductA:
+    def analisis_estadistico(self) -> AbstractProductA:
         pass
-
+    '''
+    Creo las 2 funciones que me pide el ejercicio en abstract y luego en concrete ire desarrollandolas 1 a 1
+    '''
     @abstractmethod
-    def create_product_b(self) -> AbstractProductB:
+    def visualizaciones_graficas(self) -> AbstractProductB:
         pass
     
-    @abstractmethod
-    def create_product_c(self) -> AbstractProductC:
-        pass
-    
-    @abstractmethod
-    def create_product_d(self) -> AbstractProductD:
-        pass
 
 
 class ConcreteFactory1(AbstractFactory):
     """
-    Concrete Factories produce a family of products that belong to a single
-    variant. The factory guarantees that resulting products are compatible. Note
-    that signatures of the Concrete Factory's methods return an abstract
-    product, while inside the method a concrete product is instantiated.
+    Las Fábricas de Hormigón producen una familia de productos que pertenecen a un solo
+     variante. La fábrica garantiza que los productos resultantes son compatibles. Nota
+     que las firmas de los métodos de Concrete Factory devuelven un resumen
+     producto, mientras que dentro del método se instancia un producto concreto.
     """
 
-    def create_product_a(self) -> AbstractProductA:
+    def analisis_estadistico(self) -> AbstractProductA:
         return ConcreteProductA1()
-
-    def create_product_b(self) -> AbstractProductB:
-        return ConcreteProductB1()
-    
-    def create_product_c(self) -> AbstractProductC:
-        return ConcreteProductC1()
-    
-    def create_product_d(self) -> AbstractProductD:
-        return ConcreteProductD1()
 
 
 class ConcreteFactory2(AbstractFactory):
     """
-    Each Concrete Factory has a corresponding product variant.
+    Cada fábrica de hormigón tiene una variante de producto correspondiente.
     """
 
-    def create_product_a(self) -> AbstractProductA:
-        return ConcreteProductA2()
-
-    def create_product_b(self) -> AbstractProductB:
+    def visualizaciones_graficas(self) -> AbstractProductB:
         return ConcreteProductB2()
-    
-    def create_product_c(self) -> AbstractProductC:
-        return ConcreteProductC2()
-    
-    def create_product_d(self) -> AbstractProductD:
-        return ConcreteProductD2()
     
 
 
 class AbstractProductA(ABC):
     """
-    Each distinct product of a product family should have a base interface. All
-    variants of the product must implement this interface.
+    Cada producto distinto de una familia de productos debe tener una interfaz base. Todo
+     Las variantes del producto deben implementar esta interfaz.
     """
-
+    '''
+    Aqui creo las 3 funciones (dentro del analisis que llevare a cabo en la fabrica 1)
+    que me pide el ejercicio en abstract y luego en concrete ire desarrollandolas 1 a 1
+    '''
     @abstractmethod
-    def useful_function_a(self) -> str:
+    def media(self) -> str:
         pass
-    
+    '''
     @abstractmethod
     def another_useful_function_a(self, collaborator: AbstractProductB) -> str:
         pass
-
+    '''
+    @abstractmethod
+    def moda(self) -> str:
+        pass
+    
+    @abstractmethod
+    def mediana(self) -> str:
+        pass
+    
 
 """
-Concrete Products are created by corresponding Concrete Factories.
+Los productos de hormigón son creados por las correspondientes fábricas de hormigón.
 """
 
 
 class ConcreteProductA1(AbstractProductA):
-    def useful_function_a(self) -> str:
+    def media(self, datos) -> str:
         
-        return "The result of the product A1."
-    
+        return "La media es: " + str(datos.mean())
+    '''
     def another_useful_function_a(self, collaborator: AbstractProductB) -> str:
         """
-        The variant, Product A1, is only able to work correctly with the
-        variant, Product B1. Nevertheless, it accepts any instance of
-        AbstractProductB as an argument.
+        La variante, Producto A1, sólo puede funcionar correctamente con el
+         variante, Producto B1. Sin embargo, acepta cualquier instancia de
+         AbstractProductB como argumento.
         """
         result = collaborator.useful_function_b()
         return f"The result of the A1 collaborating with the ({result})"
-
+    '''
 class ConcreteProductA2(AbstractProductA):
-    def useful_function_a(self) -> str:
-        return "The result of the product A2."
-    
+    def moda(self,datos) -> str:
+        return "La moda es: " + str(datos.mode())
+    '''
     def another_useful_function_a(self, collaborator: AbstractProductB) -> str:
         """
-        The variant, Product A2, is only able to work correctly with the
-        variant, Product B2. Nevertheless, it accepts any instance of
-        AbstractProductB as an argument.
+        La variante, Producto A2, sólo puede funcionar correctamente con el
+         variante, Producto B2. Sin embargo, acepta cualquier instancia de
+         AbstractProductB como argumento.
         """
         result = collaborator.useful_function_b()
         return f"The result of the A2 collaborating with the ({result})"
-
-
+    '''
+    
+class ConcreteProductA3(AbstractProductA):
+    def mediana(self,datos) -> str:
+        return "La mediana es: " + str(datos.median())
+    '''
+    def another_useful_function_a(self, collaborator: AbstractProductB) -> str:
+        """
+        La variante, Producto A2, sólo puede funcionar correctamente con el
+         variante, Producto B2. Sin embargo, acepta cualquier instancia de
+         AbstractProductB como argumento.
+        """
+        result = collaborator.useful_function_b()
+        return f"The result of the A2 collaborating with the ({result})"
+    '''
+'''
+Tengo dudas de si deberia meter los 3 calculos en solo 1 abstract
+luego pruebar si no ejecuta asi 
+'''
 
 
 class AbstractProductB(ABC):
     """
-    Here's the the base interface of another product. All products can interact
-    with each other, but proper interaction is possible only between products of
-    the same concrete variant.
+    Aquí está la interfaz base de otro producto. Todos los productos pueden interactuar
+     entre sí, pero la interacción adecuada sólo es posible entre productos de
+     la misma variante concreta.
     """
     @abstractmethod
-    def useful_function_b(self) -> None:
+    def grafico_barras(self):
         """
-        Product B is able to do its own thing...
+        El Producto B es capaz de hacer lo suyo...
         """
         pass
-
+    '''
     @abstractmethod
     def another_useful_function_b(self, collaborator: AbstractProductA) -> None:
         """
-        ...but it also can collaborate with the ProductA.
+        ...pero también puede colaborar con el ProductoA.
 
-        The Abstract Factory makes sure that all products it creates are of the
-        same variant and thus, compatible.
+         The Abstract Factory se asegura de que todos los productos que crea sean de la
+         misma variante y por tanto, compatible.
+        """
+        pass
+        '''
+    @abstractmethod
+    def histograma(self):
+        """
+        El Producto B es capaz de hacer lo suyo...
         """
         pass
 
-
 """
-Concrete Products are created by corresponding Concrete Factories.
+Los productos de hormigón son creados por las correspondientes fábricas de hormigón.
 """
 
 
 class ConcreteProductB1(AbstractProductB):
-    def useful_function_b(self) -> str:
-        return "The result of the product B1."
+    def grafico_barras(self,datos):
+        
+        #hazme un grafico de barras con plt
+        plt.figure(figsize=(10,5))
+        plt.bar(datos)
+        plt.show()
 
     """
-    The variant, Product B1, is only able to work correctly with the variant,
-    Product A1. Nevertheless, it accepts any instance of AbstractProductA as an
-    argument.
+    La variante, Producto B1, solo puede funcionar correctamente con la variante,
+     Producto A1. Sin embargo, acepta cualquier instancia de AbstractProductA como
+     argumento.
     """
-
+    '''
     def another_useful_function_b(self, collaborator: AbstractProductA) -> str:
         result = collaborator.useful_function_a()
         return f"The result of the B1 collaborating with the ({result})"
-
+    '''
 
 class ConcreteProductB2(AbstractProductB):
-    def useful_function_b(self) -> str:
-        return "The result of the product B2."
-
+    def histograma(self,datos):
+        #hazme un histograma con plt
+        plt.figure(figsize=(10,5))
+        plt.hist(datos)
+        plt.show()
+    
+    """
     def another_useful_function_b(self, collaborator: AbstractProductA):
-        """
-        The variant, Product B2, is only able to work correctly with the
-        variant, Product A2. Nevertheless, it accepts any instance of
-        AbstractProductA as an argument.
-        """
+        
+        La variante, Producto B2, sólo puede funcionar correctamente con el
+         variante, Producto A2. Sin embargo, acepta cualquier instancia de
+         AbstractProductA como argumento.
+        
         result = collaborator.useful_function_a()
         return f"The result of the B2 collaborating with the ({result})"
-
-class AbstractProductC(ABC):
-    """
-    Each distinct product of a product family should have a base interface. All
-    variants of the product must implement this interface.
     """
 
-    @abstractmethod
-    def useful_function_c(self) -> str:
-        pass
-    
-class ConcreteProductC1(AbstractProductC):
-    def useful_function_c(self) -> str:
-        return "The result of the product C1."
-    
-class ConcreteProductC2(AbstractProductC):
-    def useful_function_c(self) -> str:
-        return "The result of the product C2."
-    
-class AbstractProductD(ABC):
-    """
-    Each distinct product of a product family should have a base interface. All
-    variants of the product must implement this interface.
-    """
 
-    @abstractmethod
-    def useful_function_d(self) -> str:
-        pass
-    
-class ConcreteProductD1(AbstractProductD):
-    def useful_function_d(self) -> str:
-        return "The result of the product D1."
-    
-class ConcreteProductD2(AbstractProductD):
-    def useful_function_d(self) -> str:
-        return "The result of the product D2."
+
+def client_code(factory: AbstractFactory, datos) -> None:
+    """
+    El código de cliente funciona con fábricas y productos solo a través de resumen.
+     tipos: AbstractFactory y AbstractProduct. Esto te permite pasar por cualquier fábrica.
+     o subclase de producto al código del cliente sin romperlo.
+    """
+    analisis = factory.analisis_estadistico()
+    visualizaciones = factory.visualizaciones_graficas()
+
     
 
-def client_code(factory: AbstractFactory) -> None:
-    """
-    The client code works with factories and products only through abstract
-    types: AbstractFactory and AbstractProduct. This lets you pass any factory
-    or product subclass to the client code without breaking it.
-    """
-    product_a = factory.create_product_a()
-    product_b = factory.create_product_b()
-    product_c = factory.create_product_c()
-    product_d = factory.create_product_d()
+    print(analisis.media(datos))
+    print(analisis.moda(datos))
+    print(analisis.mediana(datos))
     
-
-    print(f"{product_b.useful_function_b()}")
-    print(f"{product_b.another_useful_function_b(product_a)}", end="")
-    print(f"{product_c.useful_function_c()}")
-    print(f"{product_d.useful_function_d()}")
+    print(visualizaciones.histograma(datos))
+    print(visualizaciones.grafico_barras(datos))
 
 
 if __name__ == "__main__":
     """
-    The client code can work with any concrete factory class.
+    El código del cliente puede funcionar con cualquier clase de fábrica concreta.
     """
     print("Client: Testing client code with the first factory type:")
-    client_code(ConcreteFactory1())
+    client_code(ConcreteFactory1(),datos)
 
     print("\n")
 
     print("Client: Testing the same client code with the second factory type:")
-    client_code(ConcreteFactory2())
+    client_code(ConcreteFactory2(),datos)
