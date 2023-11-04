@@ -3,6 +3,9 @@ from abc import ABC, abstractmethod
 
 import matplotlib.pyplot as plt
 
+import pandas as pd
+
+
 class AbstractFactory(ABC):
     """
     La interfaz Abstract Factory declara un conjunto de métodos que devuelven
@@ -15,9 +18,10 @@ class AbstractFactory(ABC):
     @abstractmethod
     def analisis_estadistico(self) -> AbstractProductA:
         pass
-    '''
+    
+    """
     Creo las 2 funciones que me pide el ejercicio en abstract y luego en concrete ire desarrollandolas 1 a 1
-    '''
+    """
     @abstractmethod
     def visualizaciones_graficas(self) -> AbstractProductB:
         pass
@@ -204,15 +208,19 @@ def client_code(factory: AbstractFactory, datos) -> None:
      tipos: AbstractFactory y AbstractProduct. Esto te permite pasar por cualquier fábrica.
      o subclase de producto al código del cliente sin romperlo.
     """
+    
+    datos=pd.read_csv("Ejercicio1/datoslimpios.csv", sep=';', encoding='ISO-8859-1')
+    
+    
     #aqui llamo a los metodos que busco
     analisis = factory.analisis_estadistico()
     visualizaciones = factory.visualizaciones_graficas()
 
     
 
-    print(analisis.media(datos))
-    print(analisis.moda(datos))
-    print(analisis.mediana(datos))
+    print(analisis.media(datos['LONGITUD']))
+    print(analisis.moda(datos['LONGITUD']))
+    print(analisis.mediana(datos['LONGITUD']))
     
     print(visualizaciones.histograma(datos))
     print(visualizaciones.grafico_barras(datos))
@@ -223,9 +231,9 @@ if __name__ == "__main__":
     El código del cliente puede funcionar con cualquier clase de fábrica concreta.
     """
     print("Client: Testing client code with the first factory type:")
-    client_code(ConcreteFactory1(),datos)
+    client_code(ConcreteFactory1())
 
-    print("\n")
+    print("ffff\n")
 
     print("Client: Testing the same client code with the second factory type:")
-    client_code(ConcreteFactory2(),datos)
+    client_code(ConcreteFactory2())
