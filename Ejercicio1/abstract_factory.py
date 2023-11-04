@@ -204,6 +204,7 @@ def client_code(factory: AbstractFactory, datos) -> None:
      tipos: AbstractFactory y AbstractProduct. Esto te permite pasar por cualquier fábrica.
      o subclase de producto al código del cliente sin romperlo.
     """
+    #aqui llamo a los metodos que busco
     analisis = factory.analisis_estadistico()
     visualizaciones = factory.visualizaciones_graficas()
 

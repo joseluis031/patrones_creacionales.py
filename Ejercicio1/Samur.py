@@ -1,12 +1,15 @@
 import pandas as pd
 
+ 
 
-# Leer CSV activaciones_samur_2023.csv
+URL = "https://datos.madrid.es/egob/catalogo/212504-0-emergencias-activaciones.csv"
 
-data = pd.read_csv( "Ejercicio1/activaciones_samur_2023.csv", sep=";" )
+ 
+
+# Leer CSV desde la URL
+
+data = pd.read_csv(URL, sep=';', encoding='ISO-8859-1')
 
  
 
 print(data.head())  # Mostrar las primeras filas para visualizar los datos
-
-
