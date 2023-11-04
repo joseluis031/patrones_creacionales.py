@@ -38,6 +38,9 @@ class ConcreteFactory1(AbstractFactory):
 
     def analisis_estadistico(self) -> AbstractProductA:
         return ConcreteProductA1()
+    
+    def visualizaciones_graficas(self) -> AbstractProductB:
+        return None
 
 
 class ConcreteFactory2(AbstractFactory):
@@ -47,6 +50,9 @@ class ConcreteFactory2(AbstractFactory):
 
     def visualizaciones_graficas(self) -> AbstractProductB:
         return ConcreteProductB2()
+    
+    def analisis_estadistico(self) -> AbstractProductA:
+        return None
     
 
 
@@ -83,48 +89,24 @@ Los productos de hormigón son creados por las correspondientes fábricas de hor
 
 class ConcreteProductA1(AbstractProductA):
     def media(self, datos) -> str:
-        
-        return "La media es: " + str(datos.mean())
+        return "La longitud media es: " + str(datos.mean())
+
+    def moda(self, datos) -> str:
+        return "La longitud modal es: " + str(datos.mode())
+
+    def mediana(self, datos) -> str:
+        return "La mediana en la columna de longitud es es: " + str(datos.median())
     '''
-    def another_useful_function_a(self, collaborator: AbstractProductB) -> str:
-        """
-        La variante, Producto A1, sólo puede funcionar correctamente con el
-         variante, Producto B1. Sin embargo, acepta cualquier instancia de
-         AbstractProductB como argumento.
-        """
-        result = collaborator.useful_function_b()
-        return f"The result of the A1 collaborating with the ({result})"
-    '''
-class ConcreteProductA2(AbstractProductA):
-    def moda(self,datos) -> str:
-        return "La moda es: " + str(datos.mode())
-    '''
-    def another_useful_function_a(self, collaborator: AbstractProductB) -> str:
-        """
-        La variante, Producto A2, sólo puede funcionar correctamente con el
-         variante, Producto B2. Sin embargo, acepta cualquier instancia de
-         AbstractProductB como argumento.
-        """
-        result = collaborator.useful_function_b()
-        return f"The result of the A2 collaborating with the ({result})"
-    '''
-    
-class ConcreteProductA3(AbstractProductA):
-    def mediana(self,datos) -> str:
-        return "La mediana es: " + str(datos.median())
-    '''
-    def another_useful_function_a(self, collaborator: AbstractProductB) -> str:
-        """
-        La variante, Producto A2, sólo puede funcionar correctamente con el
-         variante, Producto B2. Sin embargo, acepta cualquier instancia de
-         AbstractProductB como argumento.
-        """
-        result = collaborator.useful_function_b()
-        return f"The result of the A2 collaborating with the ({result})"
-    '''
+    def otra_funcion_util_a(self, collaborator: AbstractProductB) -> str:
+        # Implementa la lógica de esta función aquí
+        pass
+
+        '''
+
 '''
-Tengo dudas de si deberia meter los 3 calculos en solo 1 abstract
+Tengo dudas de si deberia meter los 3 calculos en solo 1 concrete y
 luego pruebar si no ejecuta asi 
+efectivamente no ejecuta asi, asi que lo he juntado en 1 concrete
 '''
 
 
@@ -230,10 +212,12 @@ if __name__ == "__main__":
     """
     El código del cliente puede funcionar con cualquier clase de fábrica concreta.
     """
+    datos=pd.read_csv("Ejercicio1/datoslimpios.csv", sep=';', encoding='ISO-8859-1')
+
     print("Client: Testing client code with the first factory type:")
-    client_code(ConcreteFactory1())
+    client_code(ConcreteFactory1(),datos)
 
     print("ffff\n")
 
     print("Client: Testing the same client code with the second factory type:")
-    client_code(ConcreteFactory2())
+    client_code(ConcreteFactory2(),datos)
