@@ -40,7 +40,7 @@ class ConcreteFactory1(AbstractFactory):
         return ConcreteProductA1()
     
     def visualizaciones_graficas(self) -> AbstractProductB:
-        return None
+        return ConcreteProductB1()
 
 
 class ConcreteFactory2(AbstractFactory):
@@ -49,10 +49,10 @@ class ConcreteFactory2(AbstractFactory):
     """
 
     def visualizaciones_graficas(self) -> AbstractProductB:
-        return ConcreteProductB2()
+        return ConcreteProductB1()
     
     def analisis_estadistico(self) -> AbstractProductA:
-        return None
+        return ConcreteProductA1()
     
 
 
@@ -150,7 +150,7 @@ class ConcreteProductB1(AbstractProductB):
         
         #hazme un grafico de barras con plt
         plt.figure(figsize=(10,5))
-        plt.bar(datos)
+        plt.bar(datos['LARGA-DURACION'],datos['GRATUITO'])
         plt.show()
 
     """
@@ -163,24 +163,16 @@ class ConcreteProductB1(AbstractProductB):
         result = collaborator.useful_function_a()
         return f"The result of the B1 collaborating with the ({result})"
     '''
-
-class ConcreteProductB2(AbstractProductB):
+    
     def histograma(self,datos):
         #hazme un histograma con plt
         plt.figure(figsize=(10,5))
-        plt.hist(datos)
+        plt.hist(datos['LARGA-DURACION'])
         plt.show()
-    
-    """
-    def another_useful_function_b(self, collaborator: AbstractProductA):
+
+
         
-        La variante, Producto B2, sólo puede funcionar correctamente con el
-         variante, Producto A2. Sin embargo, acepta cualquier instancia de
-         AbstractProductA como argumento.
-        
-        result = collaborator.useful_function_a()
-        return f"The result of the B2 collaborating with the ({result})"
-    """
+   
 
 
 
@@ -191,7 +183,6 @@ def client_code(factory: AbstractFactory, datos) -> None:
      o subclase de producto al código del cliente sin romperlo.
     """
     
-    datos=pd.read_csv("Ejercicio1/datoslimpios.csv", sep=';', encoding='ISO-8859-1')
     
     
     #aqui llamo a los metodos que busco
@@ -204,8 +195,9 @@ def client_code(factory: AbstractFactory, datos) -> None:
     print(analisis.moda(datos['LONGITUD']))
     print(analisis.mediana(datos['LONGITUD']))
     
-    print(visualizaciones.histograma(datos))
     print(visualizaciones.grafico_barras(datos))
+    print(visualizaciones.histograma(datos))
+
 
 
 if __name__ == "__main__":
