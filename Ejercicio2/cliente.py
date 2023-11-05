@@ -1,10 +1,17 @@
 from builder import *
 
+
+import csv
+
 director = Director()
 builder = ConcreteBuilder1()
 director.builder = builder
 
-
+# Esta función toma los detalles de la pizza y los guarda en un archivo CSV
+def guardar_pedido_en_csv(nombre, detalles):
+    with open('pedidos.csv', mode='a', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow([nombre, *detalles])
 
 #creame una clase Usuario que pida el nombre del usuario, contraseña y pedido y quiero que para qe elija el pedido pase al builder
 #y que el builder cree la pizza que el usuario ha pedido
@@ -29,15 +36,6 @@ class Usuario:
           producto ensamblado.
          """
          self._builder = builder
-    
-    def pedir_pizza(self) -> None:
-            self.builder.tipo_de_masa()
-            self.builder.salsa_base()
-            self.builder.ingredientes_principales()
-            self.builder.tecnicas_de_coccion()
-            self.builder.presentacion()
-            self.builder.maridajes_recomendados()
-            self.builder.extras()
             
     def pedir_nombre(self) -> None:
         self._nombre = input("Introduzca su nombre: ")
@@ -62,12 +60,18 @@ class Usuario:
         self.builder.presentacion()
         self.builder.maridajes_recomendados()
         self.builder.extras()
-        
-#quiero que la pizza que pida  el usuario se guarde en un csv en el que se guarde nombre y  todos los ingredientes de la funcion list_parts
-#y que se guarde en el mismo csv para cada usuario, es decir se vayan añadiendo filas por cada cliente
-# creame la clase
-
     
+        detalles_pizza = builder.product_pizza.parts
+        guardar_pedido_en_csv(self._nombre, detalles_pizza)
+
+# Esta función toma los detalles de la pizza y guarda solo las elecciones en un archivo CSV
+def guardar_pedido_en_csv(nombre, detalles):
+    with open('pedidos.csv', mode='a', newline='') as file:
+        writer = csv.writer(file)
+        # Solo guarda los valores, sin etiquetas
+        writer.writerow([nombre, *[" ".join(detalle.split(":")[1:]) for detalle in detalles]])
+
+
 
 if __name__ == "__main__":
     """
@@ -85,6 +89,7 @@ if __name__ == "__main__":
     usuario1.pedir_pedido()
     usuario1.pedir_pizza()
     builder.product_pizza.list_parts()
+    
     
     print("\n")
     

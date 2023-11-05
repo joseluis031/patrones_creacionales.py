@@ -156,7 +156,7 @@ class Product1():
         self.parts.append(part)
 
     def list_parts(self) -> None:
-        print(f"El cliente ha elegido su pizza: {', '.join(self.parts)}", end="")
+        print(f"El cliente ha elegido su pizza. {', '.join(self.parts)}", end="")
 
 
 class Director:
