@@ -11,27 +11,35 @@ class Builder(ABC):
 
     @property #Este es un decorador que permite acceder al método como si fuera un atributo.
     @abstractmethod
-    def product(self) -> None:
+    def product_pizza(self) -> None:
         pass
 
     @abstractmethod
-    def produce_part_a(self) -> None:
+    def tipo_de_masa(self) -> None:
         pass
 
     @abstractmethod
-    def produce_part_b(self) -> None:
+    def salsa_base(self) -> None:
         pass
 
     @abstractmethod
-    def produce_part_c(self) -> None:
+    def ingredientes_principales(self) -> None:
         pass
     
     @abstractmethod
-    def produce_part_d(self) -> None:
+    def tecnicas_de_coccion(self) -> None:
         pass
     
     @abstractmethod
-    def produce_part_e(self) -> None:
+    def presentacion(self) -> None:
+        pass
+    
+    @abstractmethod
+    def maridajes_recomendados(self) -> None:
+        pass
+    
+    @abstractmethod
+    def extras(self) -> None:
         pass
 
 
@@ -50,12 +58,12 @@ class ConcreteBuilder1(Builder):
         self.reset()
 
     def reset(self) -> None:
-        self._product = Product1()
+        self._product_pizza = Product1()
 
     @property
-    def product(self) -> Product1:
+    def product_pizza(self) -> Product1:
         """
-        Se supone que los constructores de hormigón deben proporcionar sus propios métodos para
+        Se supone que los constructores de hormigón deben proporcionar sus propios métodos(lo llamo igual) para
          recuperando resultados. Esto se debe a que varios tipos de constructores pueden crear
          productos completamente diferentes que no siguen la misma interfaz.
          Por lo tanto, dichos métodos no se pueden declarar en la interfaz base del Constructor.
@@ -68,24 +76,34 @@ class ConcreteBuilder1(Builder):
          y puede hacer que sus constructores esperen una llamada de reinicio explícita desde el
          código de cliente antes de deshacerse del resultado anterior.
         """
-        product = self._product
+        product_pizza = self._product_pizza
         self.reset()
-        return product
+        return product_pizza
 
-    def produce_part_a(self) -> None:
+    def tipo_de_masa(self) -> None:
         self._product.add("PartA1")
 
-    def produce_part_b(self) -> None:
+    def salsa_base(self) -> None:
         self._product.add("PartB1")
 
-    def produce_part_c(self) -> None:
+    def ingredientes_principales(self) -> None:
         self._product.add("PartC1")
         
-    def produce_part_d(self) -> None:
+    def tecnicas_de_coccion(self) -> None:
         self._product.add("PartD1")
     
-    def produce_part_e(self) -> None:
+    def presentacion(self) -> None:
         self._product.add("PartE1")
+        
+    def maridajes_recomendados(self) -> None:
+        self._product.add("PartF1")
+        
+    def extras(self) -> None:
+        self._product.add("PartG1")
+        
+    
+        
+    
 
 
 class Product1():
@@ -137,13 +155,15 @@ class Director:
      pasos de construcción.
     """
 
-    def build_minimal_viable_product(self) -> None:
-        self.builder.produce_part_a()
+    def build_pizza(self) -> None:
+        self.builder.tipo_de_masa()
+        self.builder.salsa_base()
+        self.builder.ingredientes_principales()
+        self.builder.tecnicas_de_coccion()
+        self.builder.presentacion()
+        self.builder.maridajes_recomendados()
+        self.builder.extras()
 
-    def build_full_featured_product(self) -> None:
-        self.builder.produce_part_a()
-        self.builder.produce_part_b()
-        self.builder.produce_part_c()
 
 
 
@@ -158,22 +178,24 @@ if __name__ == "__main__":
     builder = ConcreteBuilder1()
     director.builder = builder
 
-    print("Standard basic product: ")
-    director.build_minimal_viable_product()
-    builder.product.list_parts()
+    
 
     print("\n")
 
-    print("Standard full featured product: ")
-    director.build_full_featured_product()
-    builder.product.list_parts()
+    print("Standard full featured product,pizza completa: ")
+    director.build_pizza()
+    builder.product_pizza.list_parts()
 
     print("\n")
 
     # Remember, the Builder pattern can be used without a Director class.
     print("Custom product: ")
-    builder.produce_part_a()
-    builder.produce_part_b()
-    builder.produce_part_c()
-    builder.produce_part_d()
-    builder.product.list_parts()
+    builder.tipo_de_masa()
+    builder.salsa_base()
+    builder.ingredientes_principales()
+    builder.tecnicas_de_coccion()
+    builder.presentacion()
+    builder.maridajes_recomendados()
+    builder.extras()
+    
+    builder.product_pizza.list_parts()
