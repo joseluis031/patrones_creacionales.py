@@ -16,17 +16,17 @@ class AbstractFactory(ABC):
      otro.
     """
     @abstractmethod
-    def analisis_estadistico(self) -> AbstractProductA:
+    def analisis_estadistico(self) -> AbstractProductA_analisis:
         pass
     
     #Creo las 2 funciones que me pide el ejercicio en abstract y luego en concrete ire desarrollandolas 1 a 1
     @abstractmethod
-    def visualizaciones_graficas(self) -> AbstractProductB:
+    def visualizaciones_graficas(self) -> AbstractProductB_visualizaciones:
         pass
     
 
 
-class ConcreteFactory1(AbstractFactory):
+class ConcreteFactory1_Analisis(AbstractFactory):
     """
     Las Fábricas de Hormigón producen una familia de productos que pertenecen a un solo
      variante. La fábrica garantiza que los productos resultantes son compatibles. Nota
@@ -34,27 +34,27 @@ class ConcreteFactory1(AbstractFactory):
      producto, mientras que dentro del método se instancia un producto concreto.
     """
 
-    def analisis_estadistico(self) -> AbstractProductA:
-        return ConcreteProductA1()
+    def analisis_estadistico(self) -> AbstractProductA_analisis:
+        return ConcreteMEDIA(), ConcreteMODA(), ConcreteMEDIANA()
     
-    def visualizaciones_graficas(self) -> AbstractProductB:
-        return ConcreteProductB1()
+    def visualizaciones_graficas(self) -> AbstractProductB_visualizaciones:
+        return None
 
 
-class ConcreteFactory2(AbstractFactory):
+class ConcreteFactory2_Visualizaciones(AbstractFactory):
     """
     Cada fábrica de hormigón tiene una variante de producto correspondiente.
     """
 
-    def visualizaciones_graficas(self) -> AbstractProductB:
-        return ConcreteProductB1()
+    def visualizaciones_graficas(self) -> AbstractProductB_visualizaciones:
+        return ConcreteBARRAS(), ConcreteHISTOGRAMA()
     
-    def analisis_estadistico(self) -> AbstractProductA:
-        return ConcreteProductA1()
+    def analisis_estadistico(self) -> AbstractProductA_analisis:
+        return None
     
 
 
-class AbstractProductA(ABC):
+class AbstractProductA_analisis(ABC):
     """
     Cada producto distinto de una familia de productos debe tener una interfaz base. Todo
      Las variantes del producto deben implementar esta interfaz.
@@ -81,13 +81,17 @@ Los productos de hormigón son creados por las correspondientes fábricas de hor
 """
 
 
-class ConcreteProductA1(AbstractProductA):
+class ConcreteMEDIA(AbstractProductA_analisis):
     def media(self, datos) -> str:
         return "La longitud media es: " + str(datos.mean())
 
+class ConcreteMODA(AbstractProductA_analisis):
+    
     def moda(self, datos) -> str:
         return "La longitud modal es: " + str(datos.mode())
 
+class ConcreteMEDIANA(AbstractProductA_analisis):
+    
     def mediana(self, datos) -> str:
         return "La mediana en la columna de longitud es es: " + str(datos.median())
 
@@ -99,7 +103,7 @@ efectivamente no ejecuta asi, asi que lo he juntado en 1 concrete
 '''
 
 
-class AbstractProductB(ABC):
+class AbstractProductB_visualizaciones(ABC):
     """
     Aquí está la interfaz base de otro producto. Todos los productos pueden interactuar
      entre sí, pero la interacción adecuada sólo es posible entre productos de
@@ -125,7 +129,7 @@ Los productos de hormigón son creados por las correspondientes fábricas de hor
 """
 
 
-class ConcreteProductB1(AbstractProductB):
+class ConcreteBARRAS(AbstractProductB_visualizaciones):
     def grafico_barras(self,datos):
         
         #hazme un grafico de barras con plt
@@ -143,7 +147,7 @@ class ConcreteProductB1(AbstractProductB):
         result = collaborator.useful_function_a()
         return f"The result of the B1 collaborating with the ({result})"
     '''
-    
+class ConcreteHISTOGRAMA(AbstractProductB_visualizaciones):   
     def histograma(self,datos):
         #hazme un histograma con plt
         plt.figure(figsize=(10,5))
@@ -190,10 +194,10 @@ if __name__ == "__main__":
     
     if eleccion==1:
         print("Client: Testing client code with the first factory type:")
-        client_code(ConcreteFactory1(),datos)
+        client_code(ConcreteFactory1_Analisis(),datos)
     
     if eleccion==2:
         print("Client: Testing the same client code with the second factory type:")
-        client_code(ConcreteFactory2(),datos)
+        client_code(ConcreteFactory2_Visualizaciones(),datos)
     else:
         pass
