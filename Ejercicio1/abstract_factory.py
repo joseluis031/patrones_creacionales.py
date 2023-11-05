@@ -19,9 +19,7 @@ class AbstractFactory(ABC):
     def analisis_estadistico(self) -> AbstractProductA:
         pass
     
-    """
-    Creo las 2 funciones que me pide el ejercicio en abstract y luego en concrete ire desarrollandolas 1 a 1
-    """
+    #Creo las 2 funciones que me pide el ejercicio en abstract y luego en concrete ire desarrollandolas 1 a 1
     @abstractmethod
     def visualizaciones_graficas(self) -> AbstractProductB:
         pass
@@ -68,11 +66,7 @@ class AbstractProductA(ABC):
     @abstractmethod
     def media(self) -> str:
         pass
-    '''
-    @abstractmethod
-    def another_useful_function_a(self, collaborator: AbstractProductB) -> str:
-        pass
-    '''
+    
     @abstractmethod
     def moda(self) -> str:
         pass
@@ -96,12 +90,7 @@ class ConcreteProductA1(AbstractProductA):
 
     def mediana(self, datos) -> str:
         return "La mediana en la columna de longitud es es: " + str(datos.median())
-    '''
-    def otra_funcion_util_a(self, collaborator: AbstractProductB) -> str:
-        # Implementa la lógica de esta función aquí
-        pass
 
-        '''
 
 '''
 Tengo dudas de si deberia meter los 3 calculos en solo 1 concrete y
@@ -122,17 +111,8 @@ class AbstractProductB(ABC):
         El Producto B es capaz de hacer lo suyo...
         """
         pass
-    '''
-    @abstractmethod
-    def another_useful_function_b(self, collaborator: AbstractProductA) -> None:
-        """
-        ...pero también puede colaborar con el ProductoA.
 
-         The Abstract Factory se asegura de que todos los productos que crea sean de la
-         misma variante y por tanto, compatible.
-        """
-        pass
-        '''
+
     @abstractmethod
     def histograma(self):
         """
