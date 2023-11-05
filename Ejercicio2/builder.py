@@ -81,31 +81,57 @@ class ConcreteBuilder1(Builder):
         return product_pizza
 
     def tipo_de_masa(self) -> None:
+        lista_masa = ["normal", "fina", "extrafina", "doble"]
         masa = input("Introduzca el tipo de masa(normal, fina, extrafina o doble): ")
-        self._product_pizza.add("masa elegida: {}".format(masa))
+        if masa not in lista_masa:
+            print("no tenemos esa masa, Introduzca un tipo de masa valido")
+            self.tipo_de_masa()
+        else:
+            self._product_pizza.add("masa elegida: {}".format(masa))
 
     def salsa_base(self) -> None:
+        lista_salsa = ["tomate", "carbonara", "barbacoa", "pesto"]
         salsa = input("Introduzca la salsa base(tomate, carbonara, barbacoa o pesto): ")
-        self._product_pizza.add("salsa base elegida: {}".format(salsa))
+        if salsa not in lista_salsa:
+            print("no tenemos esa salsa, Introduzca una salsa valida")
+            self.salsa_base()
+        else:
+            self._product_pizza.add("salsa base elegida: {}".format(salsa))
 
     def ingredientes_principales(self) -> None:
         ingredientes = input("Introduzca los ingredientes principales(jamon, queso, bacon, champiñones, pimiento, cebolla, atun, aceitunas, pollo, carne, gambas, anchoas, salami, chorizo, tomate, maiz, piña o rucula): ")
         self._product_pizza.add("ingredientes principales elegidos: {}".format(ingredientes))
         
     def tecnicas_de_coccion(self) -> None:
+        lista_coccion = ["horno", "parrilla", "sarten", "microondas"]
         coccion = input("Introduzca las tecnicas de coccion(horno, parrilla, sarten o microondas): ")
-        self._product_pizza.add("tecnicas de coccion elegidas: {}".format(coccion))
+        if coccion not in lista_coccion:
+            print("no tenemos esa tecnica de coccion, Introduzca una tecnica de coccion valida")
+            self.tecnicas_de_coccion()
+        else:
+            self._product_pizza.add("tecnicas de coccion elegidas: {}".format(coccion))
     
     def presentacion(self) -> None:
+        lista_present = ["cuadrada", "redonda", "premium", "calzone", "sorpresa"]
         present=input("Introduzca la presentacion(cuadrada, redonda, premium, calzone o sorpresa): ")
-        self._product_pizza.add("presentacion elegida: {}".format(present))
+        if present not in lista_present:
+            print("no tenemos esa presentacion, Introduzca una presentacion valida")
+            self.presentacion()
+        else:
+            self._product_pizza.add("presentacion elegida: {}".format(present))
         
     def maridajes_recomendados(self) -> None:
+        lista_maridaje = ["cerveza", "vino", "refresco", "agua"]
         maridaje = input("Introduzca los maridajes recomendados(cerveza, vino, refresco o agua): ")
-        self._product_pizza.add("maridajes elegidos: {}".format(maridaje))
+        if maridaje not in lista_maridaje:
+            print("no tenemos ese maridaje, Introduzca un maridaje valido")
+            self.maridajes_recomendados()
+        else:
+            self._product_pizza.add("maridajes elegidos: {}".format(maridaje))
         
     def extras(self) -> None:
         ext = input("Introduzca los extras(queso doble, doble de ingredientes, doble de salsa, trufa, caviar, bordes de queso): ")
+      
         self._product_pizza.add("extras elegidos: {}".format(ext))
         
     
@@ -130,7 +156,7 @@ class Product1():
         self.parts.append(part)
 
     def list_parts(self) -> None:
-        print(f"Product parts: {', '.join(self.parts)}", end="")
+        print(f"El cliente ha elegido su pizza: {', '.join(self.parts)}", end="")
 
 
 class Director:
