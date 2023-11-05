@@ -64,15 +64,7 @@ class AbstractProductA_analisis(ABC):
     que me pide el ejercicio en abstract y luego en concrete ire desarrollandolas 1 a 1
     '''
     @abstractmethod
-    def media(self) -> str:
-        pass
-    
-    @abstractmethod
-    def moda(self) -> str:
-        pass
-    
-    @abstractmethod
-    def mediana(self) -> str:
+    def calcular(self) -> str:
         pass
     
 
@@ -82,18 +74,21 @@ Los productos de hormigón son creados por las correspondientes fábricas de hor
 
 
 class ConcreteMEDIA(AbstractProductA_analisis):
-    def media(self, datos) -> str:
-        return "La longitud media es: " + str(datos.mean())
+    def calcular(self, datos) -> str:
+        media = str(datos.mean())
+        return ("La longitud media es: {}".format(media))
 
 class ConcreteMODA(AbstractProductA_analisis):
     
-    def moda(self, datos) -> str:
-        return "La longitud modal es: " + str(datos.mode())
+    def calcular(self, datos) -> str:
+        moda = str(datos.mode())
+        return ("La longitud modal es: {}"  .format(moda))
 
 class ConcreteMEDIANA(AbstractProductA_analisis):
     
-    def mediana(self, datos) -> str:
-        return "La mediana en la columna de longitud es es: " + str(datos.median())
+    def calcular(self, datos) -> str:
+        mediana = str(datos.median())
+        return ("La mediana en la columna de longitud es es: {}".format(mediana))
 
 
 '''
@@ -175,9 +170,9 @@ def client_code(factory: AbstractFactory, datos) -> None:
 
     
 
-    print(analisis.media(datos['LONGITUD']))
-    print(analisis.moda(datos['LONGITUD']))
-    print(analisis.mediana(datos['LONGITUD']))
+    print(analisis.calcular(datos['LONGITUD']))
+    print(analisis.calcular(datos['LONGITUD']))
+    print(analisis.calcular(datos['LONGITUD']))
     
     print(visualizaciones.grafico_barras(datos))
     print(visualizaciones.histograma(datos))
