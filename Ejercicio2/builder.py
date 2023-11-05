@@ -81,32 +81,32 @@ class ConcreteBuilder1(Builder):
         return product_pizza
 
     def tipo_de_masa(self) -> None:
-        input("Introduzca el tipo de masa(normal, fina, extrafina o doble): ")
-        self._product_pizza.add("masa elegida")
+        masa = input("Introduzca el tipo de masa(normal, fina, extrafina o doble): ")
+        self._product_pizza.add("masa elegida: {}".format(masa))
 
     def salsa_base(self) -> None:
-        input("Introduzca la salsa base(tomate, carbonara, barbacoa o pesto): ")
-        self._product_pizza.add("salsa base elegida")
+        salsa = input("Introduzca la salsa base(tomate, carbonara, barbacoa o pesto): ")
+        self._product_pizza.add("salsa base elegida: {}".format(salsa))
 
     def ingredientes_principales(self) -> None:
-        input("Introduzca los ingredientes principales(jamon, queso, bacon, champiñones, pimiento, cebolla, atun, aceitunas, pollo, carne, gambas, anchoas, salami, chorizo, tomate, maiz, piña o rucula): ")
-        self._product_pizza.add("ingredientes principales elegidos")
+        ingredientes = input("Introduzca los ingredientes principales(jamon, queso, bacon, champiñones, pimiento, cebolla, atun, aceitunas, pollo, carne, gambas, anchoas, salami, chorizo, tomate, maiz, piña o rucula): ")
+        self._product_pizza.add("ingredientes principales elegidos: {}".format(ingredientes))
         
     def tecnicas_de_coccion(self) -> None:
-        input("Introduzca las tecnicas de coccion(horno, parrilla, sarten o microondas): ")
-        self._product_pizza.add("tecnicas de coccion elegidas")
+        coccion = input("Introduzca las tecnicas de coccion(horno, parrilla, sarten o microondas): ")
+        self._product_pizza.add("tecnicas de coccion elegidas: {}".format(coccion))
     
     def presentacion(self) -> None:
-        input("Introduzca la presentacion(cuadrada, redonda, premium, calzone o sorpresa): ")
-        self._product_pizza.add("presentacion elegida")
+        present=input("Introduzca la presentacion(cuadrada, redonda, premium, calzone o sorpresa): ")
+        self._product_pizza.add("presentacion elegida: {}".format(present))
         
     def maridajes_recomendados(self) -> None:
-        input("Introduzca los maridajes recomendados(cerveza, vino, refresco o agua): ")
-        self._product_pizza.add("maridajes elegidos")
+        maridaje = input("Introduzca los maridajes recomendados(cerveza, vino, refresco o agua): ")
+        self._product_pizza.add("maridajes elegidos: {}".format(maridaje))
         
     def extras(self) -> None:
-        input("Introduzca los extras(queso doble, doble de ingredientes, doble de salsa, trufa, caviar, bordes de queso): ")
-        self._product_pizza.add("extras elegidos")
+        ext = input("Introduzca los extras(queso doble, doble de ingredientes, doble de salsa, trufa, caviar, bordes de queso): ")
+        self._product_pizza.add("extras elegidos: {}".format(ext))
         
     
         
@@ -191,18 +191,4 @@ if __name__ == "__main__":
 
     print("Standard full featured product,pizza completa: ")
     director.build_pizza()
-    builder.product_pizza.list_parts()
-
-    print("\n")
-
-    # Remember, the Builder pattern can be used without a Director class.
-    print("Custom product: ")
-    builder.tipo_de_masa()
-    builder.salsa_base()
-    builder.ingredientes_principales()
-    builder.tecnicas_de_coccion()
-    builder.presentacion()
-    builder.maridajes_recomendados()
-    builder.extras()
-    
     builder.product_pizza.list_parts()
