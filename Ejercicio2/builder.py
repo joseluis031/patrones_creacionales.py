@@ -81,25 +81,32 @@ class ConcreteBuilder1(Builder):
         return product_pizza
 
     def tipo_de_masa(self) -> None:
-        self._product.add("PartA1")
+        input("Introduzca el tipo de masa(normal, fina, extrafina o doble): ")
+        self._product_pizza.add("masa elegida")
 
     def salsa_base(self) -> None:
-        self._product.add("PartB1")
+        input("Introduzca la salsa base(tomate, carbonara, barbacoa o pesto): ")
+        self._product_pizza.add("salsa base elegida")
 
     def ingredientes_principales(self) -> None:
-        self._product.add("PartC1")
+        input("Introduzca los ingredientes principales(jamon, queso, bacon, champiñones, pimiento, cebolla, atun, aceitunas, pollo, carne, gambas, anchoas, salami, chorizo, tomate, maiz, piña o rucula): ")
+        self._product_pizza.add("ingredientes principales elegidos")
         
     def tecnicas_de_coccion(self) -> None:
-        self._product.add("PartD1")
+        input("Introduzca las tecnicas de coccion(horno, parrilla, sarten o microondas): ")
+        self._product_pizza.add("tecnicas de coccion elegidas")
     
     def presentacion(self) -> None:
-        self._product.add("PartE1")
+        input("Introduzca la presentacion(cuadrada, redonda, premium, calzone o sorpresa): ")
+        self._product_pizza.add("presentacion elegida")
         
     def maridajes_recomendados(self) -> None:
-        self._product.add("PartF1")
+        input("Introduzca los maridajes recomendados(cerveza, vino, refresco o agua): ")
+        self._product_pizza.add("maridajes elegidos")
         
     def extras(self) -> None:
-        self._product.add("PartG1")
+        input("Introduzca los extras(queso doble, doble de ingredientes, doble de salsa, trufa, caviar, bordes de queso): ")
+        self._product_pizza.add("extras elegidos")
         
     
         
