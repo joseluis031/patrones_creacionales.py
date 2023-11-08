@@ -73,6 +73,9 @@ datos['Mes'] = datos['Mes'].map(meses_a_numeros)
 
 
 print(datos['Distrito'].mode())
+  
+  
+#solo quiero los meses de enero a marzo
 
 import matplotlib.pyplot as plt
 

@@ -99,9 +99,35 @@ class ConcreteBuilder1(Builder):
             self._product_pizza.add("salsa base elegida: {}".format(salsa))
 
     def ingredientes_principales(self) -> None:
-        ingredientes = input("Introduzca los ingredientes principales(jamon, queso, bacon, champiñones, pimiento, cebolla, atun, aceitunas, pollo, carne, gambas, anchoas, salami, chorizo, tomate, maiz, piña o rucula): ")
-        self._product_pizza.add("ingredientes principales elegidos: {}".format(ingredientes))
+        lista_ingredientes = ["jamon", "queso", "bacon", "champinones", "pimiento", "cebolla", "atun", "aceitunas", "pollo", "carne", "gambas", "anchoas", "salami", "chorizo", "tomate", "maiz", "piña", "rucula"]
+    
+        # Crea una lista para almacenar los ingredientes elegidos
+        ingredientes_elegidos = []
         
+        while True:
+            for i, ingrediente in enumerate(lista_ingredientes, 1):
+                print(f"{i}. {ingrediente}")
+            
+            seleccion = input("Introduce el número del ingrediente o '0' si no quieres mas ingredientes: ")
+            
+            if seleccion == '0':
+                break  # Terminar la selección de ingredientes
+            
+            if seleccion.isdigit():
+                indice = int(seleccion)
+                if 1 <= indice <= len(lista_ingredientes):
+                    ingrediente_elegido = lista_ingredientes[indice - 1]
+                    ingredientes_elegidos.append(ingrediente_elegido)
+                    print(f"Has elegido: {ingrediente_elegido}")
+                else:
+                    print("Número de ingrediente no válido. Inténtalo de nuevo.")
+            else:
+                print("Entrada no válida. Introduce el número del ingrediente o '0' para terminar.")
+        
+        # Agrega los ingredientes elegidos al producto
+        ingredientes_elegidos_str = ", ".join(ingredientes_elegidos)
+        self._product_pizza.add("ingredientes principales elegidos: " + ingredientes_elegidos_str)
+    
     def tecnicas_de_coccion(self) -> None:
         lista_coccion = ["horno", "parrilla", "sarten", "microondas"]
         coccion = input("Introduzca las tecnicas de coccion(horno, parrilla, sarten o microondas): ")
@@ -130,10 +156,36 @@ class ConcreteBuilder1(Builder):
             self._product_pizza.add("maridajes elegidos: {}".format(maridaje))
         
     def extras(self) -> None:
-        ext = input("Introduzca los extras(queso doble, doble de ingredientes, doble de salsa, trufa, caviar, bordes de queso): ")
-      
-        self._product_pizza.add("extras elegidos: {}".format(ext))
+        lista_extras = ["queso doble", "doble de ingredientes", "doble de salsa", "trufa", "caviar", "bordes de queso"]
+    
+        # Crea una lista para almacenar los extras elegidos
+        extras_elegidos = []
         
+        while True:
+            print("Elige extras de la lista:")
+            for i, extra in enumerate(lista_extras, 1):
+                print(f"{i}. {extra}")
+            
+            seleccion = input("Introduce el número del extra o '0' para terminar: ")
+            
+            if seleccion == '0':
+                break  # Terminar la selección de extras
+            
+            if seleccion.isdigit():
+                indice = int(seleccion)
+                if 1 <= indice <= len(lista_extras):
+                    extra_elegido = lista_extras[indice - 1]
+                    extras_elegidos.append(extra_elegido)
+                    print(f"Has elegido: {extra_elegido}")
+                else:
+                    print("Número de extra no válido. Inténtalo de nuevo.")
+            else:
+                print("Entrada no válida. Introduce el número del extra o '0' para terminar.")
+        
+        # Agrega los extras elegidos al producto
+        extras_elegidos_str = ", ".join(extras_elegidos)
+        self._product_pizza.add("extras elegidos: " + extras_elegidos_str)
+            
     
         
     
@@ -199,7 +251,7 @@ class Director:
 
 
 
-'''if __name__ == "__main__":
+if __name__ == "__main__":
     """
     El código del cliente crea un objeto constructor, lo pasa al director y luego
      inicia el proceso de construcción. El resultado final se obtiene del
@@ -216,4 +268,4 @@ class Director:
 
     print("Standard full featured product,pizza completa: ")
     director.build_pizza()
-    builder.product_pizza.list_parts()'''
+    builder.product_pizza.list_parts()
