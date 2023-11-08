@@ -77,6 +77,7 @@ Concrete Products are created by corresponding Concrete Factories.
 class Concretemes_distrito_numerico(Abstractmes_distrito):
     def moda_mes_distrito(self,datos) -> str:
         moda = datos.groupby('Distrito')['Mes'].apply(lambda x: x.mode().iloc[0] if not x.mode().empty else None)
+        print("Relacion entre Distrito que mas se repite en cada Mes(1=ENERO,2=FEBRERO...): ")
         return moda
     
     
@@ -85,6 +86,13 @@ class Concretemes_distrito_grafica(Abstractmes_distrito):
     def moda_mes_distrito(self,datos) -> str:
         moda = datos.groupby('Distrito')['Mes'].apply(lambda x: x.mode().iloc[0] if not x.mode().empty else None)
         moda.plot(kind='bar', figsize=(10,5))
+        #etiquetas
+        plt.xlabel('Mes')
+        plt.ylabel('Distrito')
+        plt.title('Distrito que mas se repite en cada Mes(1=ENERO,2=FEBRERO...)')
+        #guardar grafico
+        
+        plt.savefig('Ejercicio1.1/Graficas/relacion_mes_distrito.png')
         plt.show()
     
 
@@ -111,7 +119,7 @@ Concrete Products are created by corresponding Concrete Factories.
 class Concretedistrito_tiempo_respuesta_numerico(Abstractdistrito_tiempo_respuesta):
     def media_tiempo_resp_distrito(self,data) -> str:
         media = data.groupby('Distrito')['Tiempo de respuesta'].mean()
-
+        print("La media del tiempo de respuesta en cada distrito es: ")
         return media
 
    
@@ -124,47 +132,18 @@ class Concretedistrito_tiempo_respuesta_grafica(Abstractdistrito_tiempo_respuest
         media = data.groupby('Distrito')['Tiempo de respuesta'].mean()
 
         media.plot(kind='bar', figsize=(10,5))
+        #etiquetas
+        plt.xlabel('Distrito')
+        plt.ylabel('Tiempo de respuesta')
+        plt.title('Media del tiempo de respuesta en cada distrito')
+        #guardar grafico
+        
+        plt.savefig('Ejercicio1.1/Graficas/media_tiempo_resp_distrito.png')
         plt.show()
 
     
-'''
-class AbstractProductC(ABC):
-    """
-    Each distinct product of a product family should have a base interface. All
-    variants of the product must implement this interface.
-    """
 
-    @abstractmethod
-    def useful_function_c(self) -> str:
-        pass
     
-class ConcreteProductC1(AbstractProductC):
-    def useful_function_c(self) -> str:
-        return "The result of the product C1."
-    
-class ConcreteProductC2(AbstractProductC):
-    def useful_function_c(self) -> str:
-        return "The result of the product C2."
-    
-class AbstractProductD(ABC):
-    """
-    Each distinct product of a product family should have a base interface. All
-    variants of the product must implement this interface.
-    """
-
-    @abstractmethod
-    def useful_function_d(self) -> str:
-        pass
-    
-class ConcreteProductD1(AbstractProductD):
-    def useful_function_d(self) -> str:
-        return "The result of the product D1."
-    
-class ConcreteProductD2(AbstractProductD):
-    def useful_function_d(self) -> str:
-        return "The result of the product D2."
-    
-'''
 def client_code(factory: AbstractFactory) -> None:
     """
     The client code works with factories and products only through abstract
@@ -190,12 +169,14 @@ if __name__ == "__main__":
     """
     The client code can work with any concrete factory class.
     """
-    datos=pd.read_csv("Ejercicio1.1/datoslimpiosnumericos.csv", sep=';', encoding='UTF-8')
-
-    print("Client: Testing client code with the first factory type:")
-    client_code(ConcreteFactory_numerico())
-
-    print("\n")
-
-    print("Client: Testing the same client code with the second factory type:")
-    client_code(ConcreteFactory_grafica())
+    eleccion =int(input("¿Que fabrica quieres poner en marcha, la numerica(1) o la grafica(2)?"))
+    
+    if eleccion==1:
+    
+        print("Ponemos en marcha la fábrica numérica:")
+        client_code(ConcreteFactory_numerico())
+        print("\n")
+    if eleccion==2: 
+        print("Ponemos en marcha la fabrica gráfica:")
+        client_code(ConcreteFactory_grafica())
+        print("\n")
