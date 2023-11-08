@@ -9,11 +9,11 @@ director.builder = builder
 
 import csv
 
-def guardar_pedido_en_csv(nombre, usuario,contrasenia,detalles):
+def guardar_pedido_en_csv(nombre, usuario, contrasenia, detalles):
     with open('pedidosnuevos.csv', mode='a', newline='') as file:
         writer = csv.writer(file)
-        # Solo guarda los valores, sin etiquetas
-        writer.writerow([nombre,usuario,contrasenia *[" ".join(detalle.split(":")[1:]) for detalle in detalles]])
+        detalles_pizza = [" ".join(detalle.split(":")[1:]) for detalle in detalles]
+        writer.writerow([nombre, usuario, contrasenia] + detalles_pizza)
 
 
 
@@ -56,9 +56,10 @@ class Usuario:
         
     def pedir_pedido(self) -> None:
         
-        self._pedido = input("¿Quieres realizar un pedido? (S/N) ")
+        self._pedido = input("¿Quieres realizar un pedido? (si/no) ")
         if self._pedido == "Si" or "si" or "S" or "s":
             print("Vamos a ello!!")
+        
         
         
     def pedir_pizza(self) -> None:
@@ -74,12 +75,11 @@ class Usuario:
         guardar_pedido_en_csv(self._nombre,self._usuario, self._contrasenia, detalles_pizza)
 
         # Esta función toma los detalles de la pizza y guarda solo las elecciones en un archivo CSV
-def guardar_pedido_en_csv(nombre,usuario,contrasenia, detalles):
+def guardar_pedido_en_csv(nombre, usuario, contrasenia, detalles):
     with open('pedidosnuevos.csv', mode='a', newline='') as file:
         writer = csv.writer(file)
-        # Solo guarda los valores, sin etiquetas
-        writer.writerow([nombre,usuario,contrasenia, *[" ".join(detalle.split(":")[1:]) for detalle in detalles]])
-
+        detalles_pizza = [" ".join(detalle.split(":")[1:]) for detalle in detalles]
+        writer.writerow([nombre, usuario, contrasenia] + detalles_pizza)
 
 
 if __name__ == "__main__":
@@ -90,7 +90,7 @@ if __name__ == "__main__":
     """
     
     
-    pedido_anterior = input("¿Has realizado un pedido anteriormente? (Sí/No): ")
+    pedido_anterior = input("¿Has realizado un pedido anteriormente? (si/no): ")
 
     if pedido_anterior.lower() == "si":
         nombre_usuario = input("Por favor, introduce tu nombre: ")
@@ -116,6 +116,18 @@ if __name__ == "__main__":
                             if respuesta.lower() == "si":
                                 print("Repetimos el pedido anterior.")
                                 pedido = row[3:]
+                                break
+                            else:
+                                print("Comencemos el proceso de creación de la pizza.")
+                                usuario = Usuario()
+                                builder = ConcreteBuilder1()
+                                usuario.builder = builder
+                                usuario.pedir_nombre()
+                                usuario.pedir_usuario()
+                                usuario.pedir_contraseña()
+                                usuario.pedir_pedido()
+                                usuario.pedir_pizza()
+                                builder.product_pizza.list_parts()
                                 break
 
             if not encontrado:
