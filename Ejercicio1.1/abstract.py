@@ -16,6 +16,9 @@ class AbstractFactory(ABC):
     @abstractmethod
     def crear_relacion_mes_distrito(self) -> Abstractmes_distrito:
         pass
+    
+    def crear_relacion_distrito_tiempo_respuesta(self) -> Abstractdistrito_tiempo_respuesta:
+        pass
 
 
     
@@ -32,6 +35,9 @@ class ConcreteFactory_numerico(AbstractFactory):
 
     def crear_relacion_mes_distrito(self) -> Abstractmes_distrito:
         return Concretemes_distrito_numerico()
+    
+    def crear_relacion_distrito_tiempo_respuesta(self) -> Abstractdistrito_tiempo_respuesta:
+        return Concretedistrito_tiempo_respuesta_numerico()
 
 
 
@@ -43,6 +49,9 @@ class ConcreteFactory_grafica(AbstractFactory):
 
     def crear_relacion_mes_distrito(self) -> Abstractmes_distrito:
         return Concretemes_distrito_grafica()
+    
+    def crear_relacion_distrito_tiempo_respuesta(self) -> Abstractdistrito_tiempo_respuesta:
+        return Concretedistrito_tiempo_respuesta_grafica()
 
 
     
@@ -81,29 +90,17 @@ class Concretemes_distrito_grafica(Abstractmes_distrito):
 
 
 
-'''
-class AbstractProductB(ABC):
+
+class Abstractdistrito_tiempo_respuesta(ABC):
     """
     Here's the the base interface of another product. All products can interact
     with each other, but proper interaction is possible only between products of
     the same concrete variant.
     """
     @abstractmethod
-    def useful_function_b(self) -> None:
-        """
-        Product B is able to do its own thing...
-        """
+    def media_tiempo_resp_distrito(self) -> None:
         pass
 
-    @abstractmethod
-    def another_useful_function_b(self, collaborator: AbstractProductA) -> None:
-        """
-        ...but it also can collaborate with the ProductA.
-
-        The Abstract Factory makes sure that all products it creates are of the
-        same variant and thus, compatible.
-        """
-        pass
 
 
 """
@@ -111,34 +108,26 @@ Concrete Products are created by corresponding Concrete Factories.
 """
 
 
-class ConcreteProductB1(AbstractProductB):
-    def useful_function_b(self) -> str:
-        return "The result of the product B1."
+class Concretedistrito_tiempo_respuesta_numerico(Abstractdistrito_tiempo_respuesta):
+    def media_tiempo_resp_distrito(self,data) -> str:
+        media = data.groupby('Distrito')['Tiempo de respuesta'].mean()
 
-    """
-    The variant, Product B1, is only able to work correctly with the variant,
-    Product A1. Nevertheless, it accepts any instance of AbstractProductA as an
-    argument.
-    """
+        return media
 
-    def another_useful_function_b(self, collaborator: AbstractProductA) -> str:
-        result = collaborator.useful_function_a()
-        return f"The result of the B1 collaborating with the ({result})"
+   
 
 
-class ConcreteProductB2(AbstractProductB):
-    def useful_function_b(self) -> str:
-        return "The result of the product B2."
 
-    def another_useful_function_b(self, collaborator: AbstractProductA):
-        """
-        The variant, Product B2, is only able to work correctly with the
-        variant, Product A2. Nevertheless, it accepts any instance of
-        AbstractProductA as an argument.
-        """
-        result = collaborator.useful_function_a()
-        return f"The result of the B2 collaborating with the ({result})"
 
+class Concretedistrito_tiempo_respuesta_grafica(Abstractdistrito_tiempo_respuesta):
+    def media_tiempo_resp_distrito(self,data) -> str:
+        media = data.groupby('Distrito')['Tiempo de respuesta'].mean()
+
+        media.plot(kind='bar', figsize=(10,5))
+        plt.show()
+
+    
+'''
 class AbstractProductC(ABC):
     """
     Each distinct product of a product family should have a base interface. All
@@ -183,11 +172,16 @@ def client_code(factory: AbstractFactory) -> None:
     or product subclass to the client code without breaking it.
     """
     datos=pd.read_csv("Ejercicio1.1/datoslimpiosnumericos.csv", sep=';', encoding='ISO-8859-1')
+    
+    data=pd.read_csv("Ejercicio1.1/datoslimpios_tiempo_respuesta.csv", sep=';', encoding='UTF-8')
     relacion1 = factory.crear_relacion_mes_distrito()
+    
+    relacion2 = factory.crear_relacion_distrito_tiempo_respuesta()
 
     
 
     print(f"{relacion1.moda_mes_distrito(datos)}")
+    print(f"{relacion2.media_tiempo_resp_distrito(data)}")
     
  
 
