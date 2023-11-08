@@ -9,11 +9,13 @@ director.builder = builder
 
 import csv
 
-# Esta función toma los detalles de la pizza y los guarda en un archivo CSV
 def guardar_pedido_en_csv(nombre, detalles):
     with open('pedidos.csv', mode='a', newline='') as file:
         writer = csv.writer(file)
-        writer.writerow([nombre, *detalles])
+        # Solo guarda los valores, sin etiquetas
+        writer.writerow([nombre, *[" ".join(detalle.split(":")[1:]) for detalle in detalles]])
+
+
 
 #creame una clase Usuario que pida el nombre del usuario, contraseña y pedido y quiero que para qe elija el pedido pase al builder
 #y que el builder cree la pizza que el usuario ha pedido
@@ -66,88 +68,202 @@ class Usuario:
         detalles_pizza = builder.product_pizza.parts
         guardar_pedido_en_csv(self._nombre, detalles_pizza)
 
-# Esta función toma los detalles de la pizza y guarda solo las elecciones en un archivo CSV
+        # Esta función toma los detalles de la pizza y guarda solo las elecciones en un archivo CSV
 def guardar_pedido_en_csv(nombre, detalles):
     with open('pedidos.csv', mode='a', newline='') as file:
         writer = csv.writer(file)
         # Solo guarda los valores, sin etiquetas
         writer.writerow([nombre, *[" ".join(detalle.split(":")[1:]) for detalle in detalles]])
 
-def repetir():
-        pedido_anterior = input("¿Has realizado un pedido anteriormente? (Sí/No): ")
 
-        if pedido_anterior.lower() == "si":
-            # Solicita el nombre del usuario
-            nombre_usuario = input("Por favor, introduce tu nombre: ")
+'''import tkinter as tk
+from tkinter import ttk
 
-            # Busca el nombre en el archivo CSV
-            with open('pedidos.csv', mode='r', newline='') as file:
-                reader = csv.reader(file)
-                encontrado = False
-                for row in reader:
-                    if row and row[0] == nombre_usuario:
-                        # Usuario encontrado, muestra sus elecciones pasadas
-                        print("¡Bienvenido de nuevo, {}!".format(nombre_usuario))
-                        print("Tus elecciones anteriores son:")
-                        print(", ".join(row[1:]))
-                        encontrado = True
-                        print("¿Quieres repetir el pedido?")
-                        respuesta = input("Sí/No: ")
-                        if respuesta.lower() == "si":
-                            # Repite el pedido anterior
-                            print("Repetimos el pedido anterior.")
-                            pedido = row[1:]
-                            break
-                            # ...
-                            
-                        if respuesta.lower() == "no":
-                            # Continúa con el proceso de creación de la pizza
-                            print("Continúa con el proceso de creación de la pizza.")
-                            usuario = Usuario()
-                            builder = ConcreteBuilder1()
-                            usuario.builder = builder
-                        
-                            usuario.pedir_nombre()
-                            usuario.pedir_contraseña()
-                            usuario.pedir_pedido()
-                            usuario.pedir_pizza()
-                            builder.product_pizza.list_parts()
-                            break
-            if row and row[0] != nombre_usuario:
-                            # Continúa con el proceso de creación de la pizza
-                            print("No encontramos tu usuario, continúa con el proceso de creación de la pizza.")
-                            usuario = Usuario()
-                            builder = ConcreteBuilder1()
-                            usuario.builder = builder
-                        
-                            usuario.pedir_nombre()
-                            usuario.pedir_contraseña()
-                            usuario.pedir_pedido()
-                            usuario.pedir_pizza()
-                            builder.product_pizza.list_parts()
-                            pass
-                            
+class PizzaBuilderApp:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Pizza Builder App")
+        
+        self.create_widgets()
+        self.pizza = []
+
+    def create_widgets(self):
+        self.label = ttk.Label(self.root, text="¡Bienvenido a Pizza Builder!")
+        self.label.pack(pady=10)
+        
+        self.masa_label = ttk.Label(self.root, text="Elige el tipo de masa:")
+        self.masa_label.pack()
+        
+        self.masa_var = tk.StringVar()
+        self.masa_combobox = ttk.Combobox(self.root, textvariable=self.masa_var)
+        self.masa_combobox['values'] = ["Normal", "Fina", "Extrafina", "Doble"]
+        self.masa_combobox.pack()
+        
+        self.salsa_label = ttk.Label(self.root, text="Elige la salsa base:")
+        self.salsa_label.pack()
+        
+        self.salsa_var = tk.StringVar()
+        self.salsa_combobox = ttk.Combobox(self.root, textvariable=self.salsa_var)
+        self.salsa_combobox['values'] = ["Tomate", "Carbonara", "Barbacoa", "Pesto"]
+        self.salsa_combobox.pack()
+        
+        self.ingredientes_label = ttk.Label(self.root, text="Elige los ingredientes principales:")
+        self.ingredientes_label.pack()
+        
+        self.ingredientes_var = tk.StringVar()
+        self.ingredientes_combobox = ttk.Combobox(self.root, textvariable=self.ingredientes_var)
+        self.ingredientes_combobox['values'] = ["Jamon", "Queso", "Bacon", "Champiñones", "Pimiento", "Cebolla", "Atun", "Aceitunas", "Pollo", "Carne", "Gambas", "Anchoas", "Salami", "Chorizo", "Tomate", "Maiz", "Piña", "Rucula"]
+        self.ingredientes_combobox.pack()
+        
+        self.coccion_label = ttk.Label(self.root, text="Elige las tecnicas de coccion:")
+        self.coccion_label.pack()
+        
+        self.coccion_var = tk.StringVar()
+        self.coccion_combobox = ttk.Combobox(self.root, textvariable=self.coccion_var)
+        self.coccion_combobox['values'] = ["Horno", "Parrilla", "Sarten", "Microondas"]
+        self.coccion_combobox.pack()
+        
+        self.presentacion_label = ttk.Label(self.root, text="Elige la presentacion:")
+        self.presentacion_label.pack()
+        
+        self.presentacion_var = tk.StringVar()
+        self.presentacion_combobox = ttk.Combobox(self.root, textvariable=self.presentacion_var)
+        self.presentacion_combobox['values'] = ["Cuadrada", "Redonda", "Premium", "Calzone", "Sorpresa"]
+        self.presentacion_combobox.pack()
+        
+        self.maridaje_label = ttk.Label(self.root, text="Elige los maridajes recomendados:")
+        self.maridaje_label.pack()
+        
+        self.maridaje_var = tk.StringVar()
+        self.maridaje_combobox = ttk.Combobox(self.root, textvariable=self.maridaje_var)
+        self.maridaje_combobox['values'] = ["Cerveza", "Vino", "Refresco", "Agua"]
+        self.maridaje_combobox.pack()
+        
+        self.extras_label = ttk.Label(self.root, text="Elige los extras:")
+        self.extras_label.pack()
+        
+        self.extras_var = tk.StringVar()
+        self.extras_combobox = ttk.Combobox(self.root, textvariable=self.extras_var)
+        self.extras_combobox['values'] = ["Queso doble", "Doble de ingredientes", "Doble de salsa", "Trufa", "Caviar", "Bordes de queso"]
+        self.extras_combobox.pack()
+        
+
+        self.add_button = ttk.Button(self.root, text="Añadir a la pizza", command=self.add_to_pizza)
+        self.add_button.pack(pady=10)
+
+        self.show_pizza_button = ttk.Button(self.root, text="Mostrar detalles de la pizza", command=self.show_pizza)
+        self.show_pizza_button.pack()
+
+    def add_to_pizza(self):
+        masa = self.masa_var.get()
+        salsa = self.salsa_var.get()
+        ingredientes = self.ingredientes_var.get()
+        coccion = self.coccion_var.get()
+        presentacion = self.presentacion_var.get()
+        maridaje = self.maridaje_var.get()
+        extras = self.extras_var.get()
+        
+        self.pizza.append(f"Masa: {masa}, Salsa: {salsa}, Ingredientes: {ingredientes}, Tecnicas de coccion: {coccion}, Presentacion: {presentacion}, Maridajes recomendados: {maridaje}, Extras: {extras}")
+        self.masa_var.set("")
+        self.salsa_var.set("")
+
+    def show_pizza(self):
+        pizza_details = "\n".join(self.pizza)
+        if pizza_details:
+            pizza_details = "Detalles de la pizza:\n" + pizza_details
         else:
-                print("Comencemos el proceso de creación de la pizza.")
+            pizza_details = "La pizza está vacía. ¡Elige masa y salsa primero!"
+        self.show_message("Detalles de la Pizza", pizza_details)
 
-        # Si el nombre no se encuentra en el archivo CSV o el usuario no ha realizado un pedido anterior
-        # Continúa con el proceso de creación de la pizza
-                usuario = Usuario()
-                builder = ConcreteBuilder1()
-                usuario.builder = builder
-            
-                usuario.pedir_nombre()
-                usuario.pedir_contraseña()
-                usuario.pedir_pedido()
-                usuario.pedir_pizza()
-                builder.product_pizza.list_parts()
-
+    def show_message(self, title, message):
+        popup = tk.Toplevel()
+        popup.title(title)
+        label = ttk.Label(popup, text=message)
+        label.pack(padx=10, pady=10)
+        close_button = ttk.Button(popup, text="Cerrar", command=popup.destroy)
+        close_button.pack(pady=10)
 
 if __name__ == "__main__":
+    root = tk.Tk()
+    app = PizzaBuilderApp(root)
+    root.mainloop()
+
+'''
+
+
+'''if __name__ == "__main__":
     """
     El código del cliente crea un objeto constructor, lo pasa al director y luego
      inicia el proceso de construcción. El resultado final se obtiene del
      objeto constructor.
     """
     
-    repetir()
+    
+    pedido_anterior = input("¿Has realizado un pedido anteriormente? (Sí/No): ")
+
+    if pedido_anterior.lower() == "si":
+        # Solicita el nombre del usuario
+        nombre_usuario = input("Por favor, introduce tu nombre: ")
+
+        # Busca el nombre en el archivo CSV
+        with open('pedidos.csv', mode='r', newline='') as file:
+            reader = csv.reader(file)
+            encontrado = False
+            for row in reader:
+                if row and row[0] == nombre_usuario:
+                    # Usuario encontrado, muestra sus elecciones pasadas
+                    print("¡Bienvenido de nuevo, {}!".format(nombre_usuario))
+                    print("Tus elecciones anteriores son:")
+                    print(", ".join(row[1:]))
+                    encontrado = True
+                    print("¿Quieres repetir el pedido?")
+                    respuesta = input("Sí/No: ")
+                    if respuesta.lower() == "si":
+                        # Repite el pedido anterior
+                        print("Repetimos el pedido anterior.")
+                        pedido = row[1:]
+                        break
+                        # ...
+                        
+                    if respuesta.lower() == "no":
+                        # Continúa con el proceso de creación de la pizza
+                        print("Continúa con el proceso de creación de la pizza.")
+                        usuario = Usuario()
+                        builder = ConcreteBuilder1()
+                        usuario.builder = builder
+                    
+                        usuario.pedir_nombre()
+                        usuario.pedir_contraseña()
+                        usuario.pedir_pedido()
+                        usuario.pedir_pizza()
+                        builder.product_pizza.list_parts()
+                        break
+        if row and row[0] != nombre_usuario:
+                        # Continúa con el proceso de creación de la pizza
+                        print("No encontramos tu usuario, continúa con el proceso de creación de la pizza.")
+                        usuario = Usuario()
+                        builder = ConcreteBuilder1()
+                        usuario.builder = builder
+                    
+                        usuario.pedir_nombre()
+                        usuario.pedir_contraseña()
+                        usuario.pedir_pedido()
+                        usuario.pedir_pizza()
+                        builder.product_pizza.list_parts()
+                        pass
+                        
+    else:
+            print("Comencemos el proceso de creación de la pizza.")
+
+    # Si el nombre no se encuentra en el archivo CSV o el usuario no ha realizado un pedido anterior
+    # Continúa con el proceso de creación de la pizza
+            usuario = Usuario()
+            builder = ConcreteBuilder1()
+            usuario.builder = builder
+        
+            usuario.pedir_nombre()
+            usuario.pedir_contraseña()
+            usuario.pedir_pedido()
+            usuario.pedir_pizza()
+            builder.product_pizza.list_parts()
+'''

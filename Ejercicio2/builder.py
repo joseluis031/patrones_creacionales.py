@@ -199,8 +199,7 @@ class Director:
 
 
 
-
-if __name__ == "__main__":
+'''if __name__ == "__main__":
     """
     El código del cliente crea un objeto constructor, lo pasa al director y luego
      inicia el proceso de construcción. El resultado final se obtiene del
@@ -217,4 +216,4 @@ if __name__ == "__main__":
 
     print("Standard full featured product,pizza completa: ")
     director.build_pizza()
-    builder.product_pizza.list_parts()
+    builder.product_pizza.list_parts()'''
