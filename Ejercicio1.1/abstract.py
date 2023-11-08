@@ -196,7 +196,7 @@ if __name__ == "__main__":
     """
     The client code can work with any concrete factory class.
     """
-    datos=pd.read_csv("Ejercicio1.1/datoslimpiosnumericos.csv", sep=';', encoding='ISO-8859-1')
+    datos=pd.read_csv("Ejercicio1.1/datoslimpiosnumericos.csv", sep=';', encoding='UTF-8')
 
     print("Client: Testing client code with the first factory type:")
     client_code(ConcreteFactory_numerico())
