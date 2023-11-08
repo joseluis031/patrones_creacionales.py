@@ -77,10 +77,8 @@ print(datos['Distrito'].mode())
   
 #solo quiero los meses de enero a marzo
 
+moda = datos.groupby('Distrito')['Mes'].apply(lambda x: x.mode().iloc[0] if not x.mode().empty else None)
+print(moda)
 import matplotlib.pyplot as plt
-
-    
-plt.figure(figsize=(10,5))
-plt.bar(datos['Mes'],datos['Distrito'].mode())
+moda.plot(kind='bar', figsize=(10,5))
 plt.show()
-
