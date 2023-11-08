@@ -10,7 +10,7 @@ director.builder = builder
 import csv
 
 def guardar_pedido_en_csv(nombre, usuario, contrasenia, detalles):
-    with open('pedidosnuevos.csv', mode='a', newline='') as file:
+    with open('pedidos222nuevos.csv', mode='a', newline='') as file:
         writer = csv.writer(file)
         detalles_pizza = [" ".join(detalle.split(":")[1:]) for detalle in detalles]
         writer.writerow([nombre, usuario, contrasenia] + detalles_pizza)
@@ -76,7 +76,7 @@ class Usuario:
 
         # Esta función toma los detalles de la pizza y guarda solo las elecciones en un archivo CSV
 def guardar_pedido_en_csv(nombre, usuario, contrasenia, detalles):
-    with open('pedidosnuevos.csv', mode='a', newline='') as file:
+    with open('pedidos222nuevos.csv', mode='a', newline='') as file:
         writer = csv.writer(file)
         detalles_pizza = [" ".join(detalle.split(":")[1:]) for detalle in detalles]
         writer.writerow([nombre, usuario, contrasenia] + detalles_pizza)

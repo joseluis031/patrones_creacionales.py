@@ -90,8 +90,8 @@ class ConcreteBuilder1(Builder):
             self._product_pizza.add("masa elegida: {}".format(masa))
 
     def salsa_base(self) -> None:
-        lista_salsa = ["tomate", "carbonara", "barbacoa", "pesto", "vegana"]
-        salsa = input("Introduzca la salsa base(tomate, carbonara, barbacoa, pesto o vegana): ")
+        lista_salsa = ["tomate", "carbonara", "barbacoa", "pesto"]
+        salsa = input("Introduzca la salsa base(tomate, carbonara, barbacoa o pesto): ")
         if salsa not in lista_salsa:
             print("no tenemos esa salsa, Introduzca una salsa valida")
             self.salsa_base()
@@ -130,7 +130,7 @@ class ConcreteBuilder1(Builder):
     
     def tecnicas_de_coccion(self) -> None:
         lista_coccion = ["horno", "parrilla", "sarten", "microondas"]
-        coccion = input("Introduzca las tecnicas de coccion(horno, parrilla, sarten o microondas,): ")
+        coccion = input("Introduzca las tecnicas de coccion(horno, parrilla, sarten o microondas): ")
         if coccion not in lista_coccion:
             print("no tenemos esa tecnica de coccion, Introduzca una tecnica de coccion valida")
             self.tecnicas_de_coccion()
@@ -155,8 +155,8 @@ class ConcreteBuilder1(Builder):
         else:
             self._product_pizza.add("maridajes elegidos: {}".format(maridaje))
         
-    def extras(self) -> None:#quiero mas extras
-        lista_extras = ["queso doble", "doble de ingredientes", "doble de salsa", "trufa", "caviar", "bordes de queso","salsa  ranchera", "salsa de ajo", "salsa de mostaza", "salsa de miel", "salsa de soja", "salsa de yogur", "salsa de curry", "salsa de pimienta", "salsa de nata", "salsa de cebolla", "salsa de champiñones", "salsa de pimientos", "salsa de aceitunas", "salsa de atún", "salsa de pollo", "salsa de carne", "salsa de gambas", "salsa de anchoas", "salsa de salami", "salsa de chorizo", "salsa de tomate", "salsa de maiz", "salsa de piña", "salsa de rucula" ]
+    def extras(self) -> None:
+        lista_extras = ["queso doble", "doble de ingredientes", "doble de salsa", "trufa", "caviar", "bordes de queso"]
     
         # Crea una lista para almacenar los extras elegidos
         extras_elegidos = []
