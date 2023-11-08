@@ -111,9 +111,6 @@ class Abstractdistrito_tiempo_respuesta(ABC):
 
 
 
-"""
-Concrete Products are created by corresponding Concrete Factories.
-"""
 
 
 class Concretedistrito_tiempo_respuesta_numerico(Abstractdistrito_tiempo_respuesta):
@@ -165,18 +162,3 @@ def client_code(factory: AbstractFactory) -> None:
  
 
 
-if __name__ == "__main__":
-    """
-    The client code can work with any concrete factory class.
-    """
-    eleccion =int(input("¿Que fabrica quieres poner en marcha, la numerica(1) o la grafica(2)?"))
-    
-    if eleccion==1:
-    
-        print("Ponemos en marcha la fábrica numérica:")
-        client_code(ConcreteFactory_numerico())
-        print("\n")
-    if eleccion==2: 
-        print("Ponemos en marcha la fabrica gráfica:")
-        client_code(ConcreteFactory_grafica())
-        print("\n")
