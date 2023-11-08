@@ -248,24 +248,3 @@ class Director:
         self.builder.presentacion()
         self.builder.maridajes_recomendados()
         self.builder.extras()
-
-
-
-if __name__ == "__main__":
-    """
-    El código del cliente crea un objeto constructor, lo pasa al director y luego
-     inicia el proceso de construcción. El resultado final se obtiene del
-     objeto constructor.
-    """
-
-    director = Director()
-    builder = ConcreteBuilder1()
-    director.builder = builder
-
-    
-
-    print("\n")
-
-    print("Standard full featured product,pizza completa: ")
-    director.build_pizza()
-    builder.product_pizza.list_parts()
