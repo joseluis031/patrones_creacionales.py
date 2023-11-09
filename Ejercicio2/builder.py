@@ -156,7 +156,7 @@ class ConcreteBuilder1(Builder):
             self._product_pizza.add("maridajes elegidos: {}".format(maridaje))
         
     def extras(self) -> None:#quiero mas extras
-        lista_extras = ["queso doble", "doble de ingredientes", "doble de salsa", "trufa", "caviar", "bordes de queso","salsa  ranchera", "salsa de ajo", "salsa de mostaza", "salsa de miel", "salsa de soja", "salsa de yogur", "salsa de curry", "salsa de pimienta", "salsa de nata", "salsa de cebolla", "salsa de champiñones", "salsa de pimientos", "salsa de aceitunas", "salsa de atún", "salsa de pollo", "salsa de carne", "salsa de gambas", "salsa de anchoas", "salsa de salami", "salsa de chorizo", "salsa de tomate", "salsa de maiz", "salsa de piña", "salsa de rucula" ]
+        lista_extras = ["queso doble", "doble de ingredientes", "doble de salsa", "trufa", "caviar", "bordes de queso","salsa  ranchera", "salsa de ajo", "salsa de soja", "salsa de yogur", "salsa de curry" ]
     
         # Crea una lista para almacenar los extras elegidos
         extras_elegidos = []
