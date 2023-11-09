@@ -640,9 +640,6 @@ class Director:
 ```
 from builder import *
 
-
-import csv
-
 director = Director()
 builder = ConcreteBuilder1()
 director.builder = builder
@@ -738,15 +735,25 @@ if __name__ == "__main__":
         with open('pedidosnuevos.csv', mode='r', newline='') as file:
             reader = csv.reader(file)
             encontrado = False
-            for row in reader:  #tiene que coincidir el nombre de usuario, el nombre y la contraseña para poder verificar que es cliente
+            for row in reader:  #tiene que coincidir el nombre de usuario, el nombre y la contraseña para poder verificar que es el usuario
                 if row and row[0] == nombre_usuario and row[1] == nombre_usuario2 and row[2] == contrasenia:
                     
                             print("¡Bienvenido de nuevo, {}!".format(nombre_usuario))
-                            print("Tus elecciones anteriores son:")
                             #lee y printea los nombre de la columna 0 del csva partir de Masa
-                            print("Selecciones: Masa, Salsa, Ingredientes, coccion,presentacion,maridajes,extras")
+                                #   
+                            ingredientes = row[3:]
+                            masa = ingredientes[0]
+                            salsa = ingredientes[1]
+                            otros_ingredientes = ingredientes[2:-4]
+                            metodo = ingredientes[-4]
+                            presentacion = ingredientes[-3]
+                            maridaje = ingredientes[-2]
+                            ingredientes_extra = ingredientes[-1]
 
-                            print("Tu pizza: "+ " ".join(row[3:]))
+                            resultado = "Tu anterior pedido de pizza:\nMasa: {}\nSalsa: {}\nIngredientes: {}\nMétodo: {}\nPresentación: {}\nMaridaje: {}\nIngredientes extra: {}".format(masa, salsa, "\n".join(otros_ingredientes), metodo, presentacion, maridaje, ingredientes_extra)
+
+                            print(resultado)
+
                             print()
                             encontrado = True
                             print("¿Quieres repetir el pedido?")
