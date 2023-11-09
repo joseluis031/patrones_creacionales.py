@@ -9,13 +9,11 @@ director.builder = builder
 
 import csv
 
-
-
-
-
-#creame una clase Usuario que pida el nombre del usuario, contraseña y pedido y quiero que para qe elija el pedido pase al builder
+#creame una clase Usuario que pida el nombre del usuario, contraseña y pedido y quiero que para que elija el pedido pase al builder
 #y que el builder cree la pizza que el usuario ha pedido
 
+
+#clase usuario
 class Usuario:
     def __init__(self):
          self._builder = None
@@ -37,7 +35,8 @@ class Usuario:
           producto ensamblado.
          """
          self._builder = builder
-            
+    
+    #funciones para pedir nombre, usuario, contraseña y pedido
     def pedir_nombre(self) -> None:
         self._nombre = input("Introduzca su nombre: ")
         print("Bienvenido", self._nombre)
@@ -66,11 +65,14 @@ class Usuario:
         self.builder.presentacion()
         self.builder.maridajes_recomendados()
         self.builder.extras()
-    
+        
+        #para  guardar el pedido en un csv
         detalles_pizza = builder.product_pizza.parts
         guardar_pedido_en_csv(self._nombre,self._usuario, self._contrasenia, detalles_pizza)
 
         # Esta función toma los detalles de la pizza y guarda solo las elecciones en un archivo CSV
+
+#funcion para guardar el pedido en un csv   
 def guardar_pedido_en_csv(nombre, usuario, contrasenia, detalles):
     with open('pedidosnuevos.csv', mode='a', newline='') as file:
         writer = csv.writer(file)
@@ -85,7 +87,7 @@ if __name__ == "__main__":
      objeto constructor.
     """
     
-    
+    #pregunta si el usuario ha realizado un pedido anteriormente
     pedido_anterior = input("¿Has realizado un pedido anteriormente? (si/no): ")
 
     if pedido_anterior.lower() == "si":
@@ -96,7 +98,7 @@ if __name__ == "__main__":
         with open('pedidosnuevos.csv', mode='r', newline='') as file:
             reader = csv.reader(file)
             encontrado = False
-            for row in reader:
+            for row in reader:  #tiene que coincidir el nombre de usuario, el nombre y la contraseña para poder verificar que es cliente
                 if row and row[0] == nombre_usuario and row[1] == nombre_usuario2 and row[2] == contrasenia:
                     
                             print("¡Bienvenido de nuevo, {}!".format(nombre_usuario))

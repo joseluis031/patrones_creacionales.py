@@ -1,8 +1,8 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import Any
-#me crea todos pq lo tengo protegido no privado algun self._product
 
+#clase abstracta para el builder
 class Builder(ABC): 
     """
     La interfaz Builder especifica métodos para crear las diferentes partes de
@@ -42,7 +42,7 @@ class Builder(ABC):
     def extras(self) -> None:
         pass
 
-
+#clase concreta para el builder
 class ConcreteBuilder1(Builder):
     """
     Las clases de Concrete Builder siguen la interfaz de Builder y proporcionan
@@ -60,7 +60,7 @@ class ConcreteBuilder1(Builder):
     def reset(self) -> None:
         self._product_pizza = Product1()
 
-    @property
+    @property #Este es un decorador que permite acceder al método como si fuera un atributo.
     def product_pizza(self) -> Product1:
         """
         Se supone que los constructores de hormigón deben proporcionar sus propios métodos(lo llamo igual) para
@@ -79,7 +79,10 @@ class ConcreteBuilder1(Builder):
         product_pizza = self._product_pizza
         self.reset()
         return product_pizza
-
+    #metodos para crear las diferentes partes de los objetos del producto
+    
+    #creo una lista para cada elemento de la pizza y luego la añado al producto
+    #y si el cliente elige un elemento que no esta en la lista le digo que no lo tenemos y que elija otro
     def tipo_de_masa(self) -> None:
         lista_masa = ["normal", "fina", "extrafina", "doble"]
         masa = input("Introduzca el tipo de masa(normal, fina, extrafina o doble): ")
@@ -98,12 +101,13 @@ class ConcreteBuilder1(Builder):
         else:
             self._product_pizza.add("salsa base elegida: {}".format(salsa))
 
+    #esta funcion utilizo un bucle while para que el cliente pueda elegir mas de un ingrediente
     def ingredientes_principales(self) -> None:
         lista_ingredientes = ["jamon", "queso", "bacon", "champinones", "pimiento", "cebolla", "atun", "aceitunas", "pollo", "carne", "gambas", "anchoas", "salami", "chorizo", "tomate", "maiz", "piña", "rucula"]
     
         # Crea una lista para almacenar los ingredientes elegidos
         ingredientes_elegidos = []
-        
+        #
         while True:
             for i, ingrediente in enumerate(lista_ingredientes, 1):
                 print(f"{i}. {ingrediente}")
@@ -190,7 +194,7 @@ class ConcreteBuilder1(Builder):
         
     
 
-
+#clase para el producto
 class Product1():
     """
     Tiene sentido utilizar el patrón Builder sólo cuando sus productos sean bastante
@@ -204,11 +208,11 @@ class Product1():
     def __init__(self) -> None:
         self.parts = []
 
-    def add(self, part: Any) -> None:
-        self.parts.append(part)
+    def add(self, part: Any) -> None: 
+        self.parts.append(part) #añade las partes de la pizza
 
     def list_parts(self) -> None:
-        print(f"El cliente ha elegido su pizza. {', '.join(self.parts)}", end="")
+        print(f"El cliente ha elegido su pizza. {', '.join(self.parts)}", end="") #muestra las partes de la pizza
 
 
 class Director:
@@ -218,10 +222,11 @@ class Director:
      orden o configuración específica. Estrictamente hablando, la clase Directora es
      Opcional, ya que el cliente puede controlar a los constructores directamente.
     """
-
+     #creo un constructor
     def __init__(self) -> None:
         self._builder = None
-
+    
+    #creo un getter y un setter para el constructor
     @property
     def builder(self) -> Builder:
         return self._builder
@@ -239,7 +244,7 @@ class Director:
    El Director puede construir varias variaciones de productos utilizando el mismo
      pasos de construcción.
     """
-
+    #creo un metodo para construir la pizza
     def build_pizza(self) -> None:
         self.builder.tipo_de_masa()
         self.builder.salsa_base()

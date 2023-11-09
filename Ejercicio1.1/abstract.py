@@ -4,6 +4,9 @@ from abc import ABC, abstractmethod
 import matplotlib.pyplot as plt
 
 import pandas as pd
+
+# Clase Abstracta para la fábrica
+
 class AbstractFactory(ABC):
     """
     The Abstract Factory interface declares a set of methods that return
@@ -13,17 +16,18 @@ class AbstractFactory(ABC):
     variants, but the products of one variant are incompatible with products of
     another.
     """
+    
     @abstractmethod
-    def crear_relacion_mes_distrito(self) -> Abstractmes_distrito:
+    def crear_relacion_mes_distrito(self) -> Abstractmes_distrito: #metodo abstracto
         pass
     
-    def crear_relacion_distrito_tiempo_respuesta(self) -> Abstractdistrito_tiempo_respuesta:
+    def crear_relacion_distrito_tiempo_respuesta(self) -> Abstractdistrito_tiempo_respuesta: #metodo abstracto
         pass
 
 
     
 
-
+# Fábrica concreta para datos numéricos
 
 class ConcreteFactory_numerico(AbstractFactory):
     """
@@ -32,39 +36,47 @@ class ConcreteFactory_numerico(AbstractFactory):
     that signatures of the Concrete Factory's methods return an abstract
     product, while inside the method a concrete product is instantiated.
     """
-
-    def crear_relacion_mes_distrito(self) -> Abstractmes_distrito:
-        return Concretemes_distrito_numerico()
     
-    def crear_relacion_distrito_tiempo_respuesta(self) -> Abstractdistrito_tiempo_respuesta:
-        return Concretedistrito_tiempo_respuesta_numerico()
+    '''Cada fábrica concreta derivada de esta interfaz implementará 
+    estos métodos para crear instancias de productos relacionados.
+    '''
+
+
+    def crear_relacion_mes_distrito(self) -> Abstractmes_distrito: #metodo abstracto
+        return Concretemes_distrito_numerico()   #devuelve el metodo de la clase concreta
+    
+    def crear_relacion_distrito_tiempo_respuesta(self) -> Abstractdistrito_tiempo_respuesta: #metodo abstracto
+        return Concretedistrito_tiempo_respuesta_numerico()         #devuelve el metodo de la clase concreta
 
 
 
-
+# Fábrica concreta para gráficas
 class ConcreteFactory_grafica(AbstractFactory):
     """
-    Each Concrete Factory has a corresponding product variant.
+    Esta clase concreta (ConcreteFactory_numerico) implementa la interfaz AbstractFactory, 
+    proporcionando versiones numéricas de los productos 
+    (Concretemes_distrito_numerico y Concretedistrito_tiempo_respuesta_numerico).    
     """
-
-    def crear_relacion_mes_distrito(self) -> Abstractmes_distrito:
-        return Concretemes_distrito_grafica()
-    
-    def crear_relacion_distrito_tiempo_respuesta(self) -> Abstractdistrito_tiempo_respuesta:
-        return Concretedistrito_tiempo_respuesta_grafica()
-
-
     
 
+    def crear_relacion_mes_distrito(self) -> Abstractmes_distrito: #metodo abstracto
+        return Concretemes_distrito_grafica()       #devuelve el metodo de la clase concreta
+    
+    def crear_relacion_distrito_tiempo_respuesta(self) -> Abstractdistrito_tiempo_respuesta: #metodo abstracto
+        return Concretedistrito_tiempo_respuesta_grafica()                  #devuelve el metodo de la clase concreta
 
+
+    
+
+## Clase Abstracta para la relación entre mes y distrito
 class Abstractmes_distrito(ABC):
     """
-    Each distinct product of a product family should have a base interface. All
-    variants of the product must implement this interface.
+    La interfaz Abstractmes_distrito define un método abstracto 
+    moda_mes_distrito que deberá ser implementado por las clases concretas.
     """
 
     @abstractmethod
-    def moda_mes_distrito(self) -> str:
+    def moda_mes_distrito(self) -> str: #metodo abstracto
         pass
     
 
@@ -73,15 +85,26 @@ class Abstractmes_distrito(ABC):
 Concrete Products are created by corresponding Concrete Factories.
 """
 
-
-class Concretemes_distrito_numerico(Abstractmes_distrito):
+# Clase concreta para relación numérica entre mes y distrito
+'''
+Esta clase concreta (Concretemes_distrito_numerico) implementa la interfaz 
+Abstractmes_distrito para producir una relación 
+numérica entre el distrito que más se repite en cada mes.
+'''
+class Concretemes_distrito_numerico(Abstractmes_distrito): #hereda de la clase abstracta
     def moda_mes_distrito(self,datos) -> str:
         moda = datos.groupby('Distrito')['Mes'].apply(lambda x: x.mode().iloc[0] if not x.mode().empty else None)
         print("Relacion entre Distrito que mas se repite en cada Mes(1=ENERO,2=FEBRERO...): ")
         return moda
     
     
+# Clase concreta para relación gráfica entre mes y distrito
 
+'''
+Esta otra clase concreta (Concretemes_distrito_grafica) también implementa la interfaz 
+Abstractmes_distrito, pero en lugar de devolver 
+la relación como solucion numerica, crea y guarda una gráfica.
+'''
 class Concretemes_distrito_grafica(Abstractmes_distrito):
     def moda_mes_distrito(self,datos) -> str:
         moda = datos.groupby('Distrito')['Mes'].apply(lambda x: x.mode().iloc[0] if not x.mode().empty else None)
@@ -98,7 +121,12 @@ class Concretemes_distrito_grafica(Abstractmes_distrito):
 
 
 
+## Clase Abstracta para la relación entre distrito y tiempo de respuesta
 
+'''La interfaz Abstractdistrito_tiempo_respuesta define un método abstracto 
+media_tiempo_resp_distrito 
+que deberá ser implementado por las clases concretas.
+'''
 class Abstractdistrito_tiempo_respuesta(ABC):
     """
     Here's the the base interface of another product. All products can interact
@@ -106,14 +134,19 @@ class Abstractdistrito_tiempo_respuesta(ABC):
     the same concrete variant.
     """
     @abstractmethod
-    def media_tiempo_resp_distrito(self) -> None:
+    def media_tiempo_resp_distrito(self) -> None: #metodo abstracto
         pass
 
 
 
 
-
-class Concretedistrito_tiempo_respuesta_numerico(Abstractdistrito_tiempo_respuesta):
+# Clase concreta para relación numérica entre distrito y tiempo de respuesta
+'''
+Esta clase concreta (Concretedistrito_tiempo_respuesta_numerico) implementa la interfaz 
+Abstractdistrito_tiempo_respuesta para calcular 
+la media numérica del tiempo de respuesta en cada distrito.
+'''
+class Concretedistrito_tiempo_respuesta_numerico(Abstractdistrito_tiempo_respuesta): #hereda de la clase abstracta
     def media_tiempo_resp_distrito(self,data) -> str:
         media = data.groupby('Distrito')['Tiempo de respuesta'].mean()
         print("La media del tiempo de respuesta en cada distrito es: ")
@@ -123,8 +156,13 @@ class Concretedistrito_tiempo_respuesta_numerico(Abstractdistrito_tiempo_respues
 
 
 
-
-class Concretedistrito_tiempo_respuesta_grafica(Abstractdistrito_tiempo_respuesta):
+# Clase concreta para relación gráfica entre distrito y tiempo de respuesta
+'''
+Esta otra clase concreta (Concretedistrito_tiempo_respuesta_grafica) también implementa 
+la interfaz Abstractdistrito_tiempo_respuesta, pero en 
+lugar de devolver la media como dato numerico, crea y guarda una gráfica.
+'''
+class Concretedistrito_tiempo_respuesta_grafica(Abstractdistrito_tiempo_respuesta): #hereda de la clase abstracta
     def media_tiempo_resp_distrito(self,data) -> str:
         media = data.groupby('Distrito')['Tiempo de respuesta'].mean()
 
@@ -140,7 +178,12 @@ class Concretedistrito_tiempo_respuesta_grafica(Abstractdistrito_tiempo_respuest
 
     
 
-    
+# Función para crear la fábrica
+'''
+Este es el código del cliente. Se le pasa una fábrica concreta y utiliza las interfaces 
+Abstractmes_distrito y Abstractdistrito_tiempo_respuesta para 
+crear productos relacionados y realizar operaciones sobre ellos.
+'''
 def client_code(factory: AbstractFactory) -> None:
     """
     The client code works with factories and products only through abstract
