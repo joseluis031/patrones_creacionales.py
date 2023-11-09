@@ -371,3 +371,440 @@ Cabe decir que a medida que iba desarrollando el patrón, mi entendimiento sobre
 que no he querido borrar para verlo en un futuro y no fallar, en ese patrón en el ejercicio no entendía del todo que tenía que centrarme en el "producto abstracto"
 y luego desarrollarlo de diferente manera dependiendo la "ConcretFactory", me daba problemas el hecho de no saber al 100% donde meter cada metodo abstracto
 
+
+
+## Ejercicio 2
+### Sistema Integral de Creación y Gestión de Pizzas Gourmet con Almacenamiento en CSV utilizando el Patrón Builder
+Para resolver este ejercicio hemos hecho uso de código y csv que explicaré mas adelante
+
+### Código Builder
+```
+from __future__ import annotations
+from abc import ABC, abstractmethod
+from typing import Any
+
+#clase abstracta para el builder
+class Builder(ABC): 
+    """
+    La interfaz Builder especifica métodos para crear las diferentes partes de
+     los objetos del Producto.
+    """
+
+    @property #Este es un decorador que permite acceder al método como si fuera un atributo.
+    @abstractmethod
+    def product_pizza(self) -> None:
+        pass
+
+    @abstractmethod
+    def tipo_de_masa(self) -> None:
+        pass
+
+    @abstractmethod
+    def salsa_base(self) -> None:
+        pass
+
+    @abstractmethod
+    def ingredientes_principales(self) -> None:
+        pass
+    
+    @abstractmethod
+    def tecnicas_de_coccion(self) -> None:
+        pass
+    
+    @abstractmethod
+    def presentacion(self) -> None:
+        pass
+    
+    @abstractmethod
+    def maridajes_recomendados(self) -> None:
+        pass
+    
+    @abstractmethod
+    def extras(self) -> None:
+        pass
+
+#clase concreta para el builder
+class ConcreteBuilder1(Builder):
+    """
+    Las clases de Concrete Builder siguen la interfaz de Builder y proporcionan
+     Implementaciones específicas de los pasos de construcción. Su programa puede tener
+     Varias variaciones de Builders, implementadas de manera diferente.
+    """
+
+    def __init__(self) -> None:
+        """
+        Una nueva instancia de constructor debe contener un objeto de producto en blanco, que es
+         utilizado en el montaje posterior.
+        """
+        self.reset()
+
+    def reset(self) -> None:
+        self._product_pizza = Product1()
+
+    @property #Este es un decorador que permite acceder al método como si fuera un atributo.
+    def product_pizza(self) -> Product1:
+        """
+        Se supone que los constructores de hormigón deben proporcionar sus propios métodos(lo llamo igual) para
+         recuperando resultados. Esto se debe a que varios tipos de constructores pueden crear
+         productos completamente diferentes que no siguen la misma interfaz.
+         Por lo tanto, dichos métodos no se pueden declarar en la interfaz base del Constructor.
+         (al menos en un lenguaje de programación de tipo estático).
+
+         Generalmente, después de devolver el resultado final al cliente, un constructor
+         Se espera que la instancia esté lista para comenzar a producir otro producto.
+         Por eso es una práctica habitual llamar al método reset al final de
+         el cuerpo del método `getProduct`. Sin embargo, este comportamiento no es obligatorio,
+         y puede hacer que sus constructores esperen una llamada de reinicio explícita desde el
+         código de cliente antes de deshacerse del resultado anterior.
+        """
+        product_pizza = self._product_pizza
+        self.reset()
+        return product_pizza
+    #metodos para crear las diferentes partes de los objetos del producto
+    
+    #creo una lista para cada elemento de la pizza y luego la añado al producto
+    #y si el cliente elige un elemento que no esta en la lista le digo que no lo tenemos y que elija otro
+    def tipo_de_masa(self) -> None:
+        lista_masa = ["normal", "fina", "extrafina", "doble"]
+        masa = input("Introduzca el tipo de masa(normal, fina, extrafina o doble): ")
+        if masa not in lista_masa:
+            print("no tenemos esa masa, Introduzca un tipo de masa valido")
+            self.tipo_de_masa()
+        else:
+            self._product_pizza.add("masa elegida: {}".format(masa))
+
+    def salsa_base(self) -> None:
+        lista_salsa = ["tomate", "carbonara", "barbacoa", "pesto", "vegana"]
+        salsa = input("Introduzca la salsa base(tomate, carbonara, barbacoa, pesto o vegana): ")
+        if salsa not in lista_salsa:
+            print("no tenemos esa salsa, Introduzca una salsa valida")
+            self.salsa_base()
+        else:
+            self._product_pizza.add("salsa base elegida: {}".format(salsa))
+
+    #esta funcion utilizo un bucle while para que el cliente pueda elegir mas de un ingrediente
+    def ingredientes_principales(self) -> None:
+        lista_ingredientes = ["jamon", "queso", "bacon", "champinones", "pimiento", "cebolla", "atun", "aceitunas", "pollo", "carne", "gambas", "anchoas", "salami", "chorizo", "tomate", "maiz", "piña", "rucula"]
+    
+        # Crea una lista para almacenar los ingredientes elegidos
+        ingredientes_elegidos = []
+        #
+        while True:
+            for i, ingrediente in enumerate(lista_ingredientes, 1):
+                print(f"{i}. {ingrediente}")
+            
+            seleccion = input("Introduce el número del ingrediente o '0' si no quieres mas ingredientes: ")
+            
+            if seleccion == '0':
+                break  # Terminar la selección de ingredientes
+            
+            if seleccion.isdigit():
+                indice = int(seleccion)
+                if 1 <= indice <= len(lista_ingredientes):
+                    ingrediente_elegido = lista_ingredientes[indice - 1]
+                    ingredientes_elegidos.append(ingrediente_elegido)
+                    print(f"Has elegido: {ingrediente_elegido}")
+                else:
+                    print("Número de ingrediente no válido. Inténtalo de nuevo.")
+            else:
+                print("Entrada no válida. Introduce el número del ingrediente o '0' para terminar.")
+        
+        # Agrega los ingredientes elegidos al producto
+        ingredientes_elegidos_str = ", ".join(ingredientes_elegidos)
+        self._product_pizza.add("ingredientes principales elegidos: " + ingredientes_elegidos_str)
+    
+    def tecnicas_de_coccion(self) -> None:
+        lista_coccion = ["horno", "parrilla", "sarten", "microondas"]
+        coccion = input("Introduzca las tecnicas de coccion(horno, parrilla, sarten o microondas,): ")
+        if coccion not in lista_coccion:
+            print("no tenemos esa tecnica de coccion, Introduzca una tecnica de coccion valida")
+            self.tecnicas_de_coccion()
+        else:
+            self._product_pizza.add("tecnicas de coccion elegidas: {}".format(coccion))
+    
+    def presentacion(self) -> None:
+        lista_present = ["cuadrada", "redonda", "premium", "calzone", "sorpresa"]
+        present=input("Introduzca la presentacion(cuadrada, redonda, premium, calzone o sorpresa): ")
+        if present not in lista_present:
+            print("no tenemos esa presentacion, Introduzca una presentacion valida")
+            self.presentacion()
+        else:
+            self._product_pizza.add("presentacion elegida: {}".format(present))
+        
+    def maridajes_recomendados(self) -> None:
+        lista_maridaje = ["cerveza", "vino", "refresco", "agua"]
+        maridaje = input("Introduzca los maridajes recomendados(cerveza, vino, refresco o agua): ")
+        if maridaje not in lista_maridaje:
+            print("no tenemos ese maridaje, Introduzca un maridaje valido")
+            self.maridajes_recomendados()
+        else:
+            self._product_pizza.add("maridajes elegidos: {}".format(maridaje))
+        
+    def extras(self) -> None:#quiero mas extras
+        lista_extras = ["queso doble", "doble de ingredientes", "doble de salsa", "trufa", "caviar", "bordes de queso","salsa  ranchera", "salsa de ajo", "salsa de soja", "salsa de yogur", "salsa de curry" ]
+    
+        # Crea una lista para almacenar los extras elegidos
+        extras_elegidos = []
+        
+        while True:
+            print("Elige extras de la lista:")
+            for i, extra in enumerate(lista_extras, 1):
+                print(f"{i}. {extra}")
+            
+            seleccion = input("Introduce el número del extra o '0' para terminar: ")
+            
+            if seleccion == '0':
+                break  # Terminar la selección de extras
+            
+            if seleccion.isdigit():
+                indice = int(seleccion)
+                if 1 <= indice <= len(lista_extras):
+                    extra_elegido = lista_extras[indice - 1]
+                    extras_elegidos.append(extra_elegido)
+                    print(f"Has elegido: {extra_elegido}")
+                else:
+                    print("Número de extra no válido. Inténtalo de nuevo.")
+            else:
+                print("Entrada no válida. Introduce el número del extra o '0' para terminar.")
+        
+        # Agrega los extras elegidos al producto
+        extras_elegidos_str = ", ".join(extras_elegidos)
+        self._product_pizza.add("extras elegidos: " + extras_elegidos_str)
+            
+    
+        
+    
+
+#clase para el producto
+class Product1():
+    """
+    Tiene sentido utilizar el patrón Builder sólo cuando sus productos sean bastante
+     complejos y requieren una configuración extensa.
+
+     A diferencia de otros patrones creacionales, diferentes constructores concretos pueden producir
+     productos no relacionados. En otras palabras, es posible que los resultados de varios constructores no
+     Sigue siempre la misma interfaz.
+    """
+
+    def __init__(self) -> None:
+        self.parts = []
+
+    def add(self, part: Any) -> None: 
+        self.parts.append(part) #añade las partes de la pizza
+
+    def list_parts(self) -> None:
+        print(f"El cliente ha elegido su pizza. {', '.join(self.parts)}", end="") #muestra las partes de la pizza
+
+
+class Director:
+    """
+    El Director sólo es responsable de ejecutar los pasos de construcción en un
+     secuencia determinada. Es útil cuando se producen productos de acuerdo con un
+     orden o configuración específica. Estrictamente hablando, la clase Directora es
+     Opcional, ya que el cliente puede controlar a los constructores directamente.
+    """
+     #creo un constructor
+    def __init__(self) -> None:
+        self._builder = None
+    
+    #creo un getter y un setter para el constructor
+    @property
+    def builder(self) -> Builder:
+        return self._builder
+
+    @builder.setter
+    def builder(self, builder: Builder) -> None:
+        """
+        El Director trabaja con cualquier instancia de constructor que pase el código del cliente.
+         lo. De esta manera, el código del cliente puede alterar el tipo final del nuevo
+         producto ensamblado.
+        """
+        self._builder = builder
+
+    """
+   El Director puede construir varias variaciones de productos utilizando el mismo
+     pasos de construcción.
+    """
+    #creo un metodo para construir la pizza
+    def build_pizza(self) -> None:
+        self.builder.tipo_de_masa()
+        self.builder.salsa_base()
+        self.builder.ingredientes_principales()
+        self.builder.tecnicas_de_coccion()
+        self.builder.presentacion()
+        self.builder.maridajes_recomendados()
+        self.builder.extras()
+```
+
+### Código Cliente y Lanzador
+```
+from builder import *
+
+
+import csv
+
+director = Director()
+builder = ConcreteBuilder1()
+director.builder = builder
+
+import csv
+
+#creame una clase Usuario que pida el nombre del usuario, contraseña y pedido y quiero que para que elija el pedido pase al builder
+#y que el builder cree la pizza que el usuario ha pedido
+
+
+#clase usuario
+class Usuario:
+    def __init__(self):
+         self._builder = None
+         self._nombre = None
+         self.usuario = None
+         self._contrasenia = None
+         self._pedido = None
+         self._pizza = None
+
+    @property
+    def builder(self) -> Builder:
+         return self._builder
+
+    @builder.setter
+    def builder(self, builder: Builder) -> None:
+         """
+         El Director trabaja con cualquier instancia de constructor que pase el código del cliente.
+          lo. De esta manera, el código del cliente puede alterar el tipo final del nuevo
+          producto ensamblado.
+         """
+         self._builder = builder
+    
+    #funciones para pedir nombre, usuario, contraseña y pedido
+    def pedir_nombre(self) -> None:
+        self._nombre = input("Introduzca su nombre: ")
+        print("Bienvenido", self._nombre)
+        
+    def pedir_usuario(self) -> None:
+        self._usuario = input("Introduzca su usuario: ")
+        print("Usuario correcto")
+    
+    def pedir_contraseña(self) -> None:
+        self._contrasenia = input("Introduzca su contraseña: ")
+        print("Contraseña guardada")
+        
+    def pedir_pedido(self) -> None:
+        
+        self._pedido = input("¿Quieres realizar un pedido? (si/no) ")
+        if self._pedido == "Si" or "si" or "S" or "s":
+            print("Vamos a ello!!")
+        
+        
+        
+    def pedir_pizza(self) -> None:
+        self.builder.tipo_de_masa()
+        self.builder.salsa_base()
+        self.builder.ingredientes_principales()
+        self.builder.tecnicas_de_coccion()
+        self.builder.presentacion()
+        self.builder.maridajes_recomendados()
+        self.builder.extras()
+        
+        #para  guardar el pedido en un csv
+        detalles_pizza = builder.product_pizza.parts
+        guardar_pedido_en_csv(self._nombre,self._usuario, self._contrasenia, detalles_pizza)
+
+        # Esta función toma los detalles de la pizza y guarda solo las elecciones en un archivo CSV
+
+#funcion para guardar el pedido en un csv   
+def guardar_pedido_en_csv(nombre, usuario, contrasenia, detalles):
+    with open('pedidosnuevos.csv', mode='a', newline='') as file:
+        writer = csv.writer(file)
+        detalles_pizza = [" ".join(detalle.split(":")[1:]) for detalle in detalles]
+        writer.writerow([nombre, usuario, contrasenia] + detalles_pizza)
+
+
+if __name__ == "__main__":
+    """
+    El código del cliente crea un objeto constructor, lo pasa al director y luego
+     inicia el proceso de construcción. El resultado final se obtiene del
+     objeto constructor.
+    """
+    
+    #pregunta si el usuario ha realizado un pedido anteriormente
+    pedido_anterior = input("¿Has realizado un pedido anteriormente? (si/no): ")
+
+    if pedido_anterior.lower() == "si":
+        nombre_usuario = input("Por favor, introduce tu nombre: ")
+        nombre_usuario2 = input("Por favor, introduce tu nombre de usuario: ")
+        contrasenia = input("Por favor, introduce tu contraseña: ")
+
+        with open('pedidosnuevos.csv', mode='r', newline='') as file:
+            reader = csv.reader(file)
+            encontrado = False
+            for row in reader:  #tiene que coincidir el nombre de usuario, el nombre y la contraseña para poder verificar que es cliente
+                if row and row[0] == nombre_usuario and row[1] == nombre_usuario2 and row[2] == contrasenia:
+                    
+                            print("¡Bienvenido de nuevo, {}!".format(nombre_usuario))
+                            print("Tus elecciones anteriores son:")
+                            #lee y printea los nombre de la columna 0 del csva partir de Masa
+                            print("Selecciones: Masa, Salsa, Ingredientes, coccion,presentacion,maridajes,extras")
+
+                            print("Tu pizza: "+ " ".join(row[3:]))
+                            print()
+                            encontrado = True
+                            print("¿Quieres repetir el pedido?")
+                            respuesta = input("Sí/No: ")
+                            if respuesta.lower() == "si":
+                                print("Repetimos el pedido anterior.")
+                                pedido = row[3:]
+                                break
+                            else:
+                                print("Comencemos el proceso de creación de la pizza.")
+                                usuario = Usuario()
+                                builder = ConcreteBuilder1()
+                                usuario.builder = builder
+                                usuario.pedir_nombre()
+                                usuario.pedir_usuario()
+                                usuario.pedir_contraseña()
+                                usuario.pedir_pedido()
+                                usuario.pedir_pizza()
+                                builder.product_pizza.list_parts()
+                                break
+
+            if not encontrado:
+                print("No encontramos tu usuario o la contraseña es incorrecta. Continúa con el proceso de creación de la pizza.")
+                usuario = Usuario()
+                builder = ConcreteBuilder1()
+                usuario.builder = builder
+                usuario.pedir_nombre()
+                usuario.pedir_usuario()
+                usuario.pedir_contraseña()
+                usuario.pedir_pedido()
+                usuario.pedir_pizza()
+                builder.product_pizza.list_parts()
+
+    else:
+        print("Comencemos el proceso de creación de la pizza.")
+        usuario = Usuario()
+        builder = ConcreteBuilder1()
+        usuario.builder = builder
+        usuario.pedir_nombre()
+        usuario.pedir_usuario()
+        usuario.pedir_contraseña()
+        usuario.pedir_pedido()
+        usuario.pedir_pizza()
+        builder.product_pizza.list_parts()
+        
+```
+
+En este ejercicio hemos hecho uso del patrón Builder, mas sencillo de implementar que el Abstract factory,
+lo hemos adecuado para la construcción de la pizza en una pizzeria y que de como resultado por terminal la opción de elegir
+cada elemento de la pizza y su resultado final.
+
+En el codigo del cliente hemos implementado una clase Usuario para mejorar la experiencia del usuario,
+la clase da como resultado por terminal algo mas amigable para el cliente, ya que tiene que poner su nombre, usuario y contraseña, antes de realizar su pedido,
+y una vez que realiza su pedido, este se guarda en una base de datos de datos la cual almacena nombre,usuario y contraseña, además de su elección de pizza, gracias a una función que 
+lleva a cabo la escritura en la base de datos.
+El programa también es capaz de una vez que el cliente está en la web, si es un usuario conocido y introduce bien sus datos, es capaz de buscar en la base de datos su elección de pizza
+ y le de la opción de repetir el pedido o guardar otro nuevo.
+
+ El programa garantiza la seguridad y privacidad del usuario ya que solamente él, es capaz de acceder a su cuenta si introduce bien sus datos.
+ El programa es flexible a la hora de añadir nuevos ingredientes o fórmulas, tiene una amplia compatibilidad de elecciones, da la opción al cliente, de repetir su pedido y tiene una
+ "interfaz amigable por terminal"
