@@ -1,8 +1,5 @@
 from builder import *
 
-
-import csv
-
 director = Director()
 builder = ConcreteBuilder1()
 director.builder = builder
