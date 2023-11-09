@@ -362,14 +362,17 @@ los datos que teniamos que lo mas óptimo era sacar las relaciones que hemos sac
 una gran cantidad de relaciones, las que hemos elegido representan de manera adecuada lo que queremos por que no hay excesividad de 
 variedad en los datos y se entienden bien las gráficas.
 
-Para ello hemos decidido dividir el csv en 2 csv limpios, uno para la primera relaccion en la que hemos transformado los meses a valores numéricos mediante
-un diccionario para establecer la relación del distrito que mas se repite en cada mes a la hora de llamar a las emergencias; y otro hemos creado
+Para ello hemos decidido dividir el csv en 2 csv limpios en los que no tenemos valores nulos, uno para la primera relaccion en la que hemos transformado los meses a valores numéricos mediante un diccionario para establecer la relación del distrito que mas se repite en cada mes a la hora de llamar a las emergencias; y otro hemos creado
 una nueva columna en el csv que nos permite saber el tiempo de respuesta de las unidades de emergencia en cada solicitud, y despues hemos calculado la media
 del tiempo de respuesta en cada distrito.  (EJERCICIO 1.1)
 
 Cabe decir que a medida que iba desarrollando el patrón, mi entendimiento sobre el mismo, ha ido cambiando por eso tengo otro (EJERCICIO1) incompleto pero
 que no he querido borrar para verlo en un futuro y no fallar, en ese patrón en el ejercicio no entendía del todo que tenía que centrarme en el "producto abstracto"
-y luego desarrollarlo de diferente manera dependiendo la "ConcretFactory", me daba problemas el hecho de no saber al 100% donde meter cada metodo abstracto
+y luego desarrollarlo de diferente manera dependiendo la "ConcretFactory", me daba problemas el hecho de no saber al 100% donde meter cada metodo abstracto.
+
+El patrón que he seguido se basa en un abstract factory que tiene 2 metodos abstractos( relación del distrito que mas se repite en cada mes a la hora de llamar a las emergencias y
+la media del tiempo de respuesta en cada distrito ) , luego se divide en 2 fabricas, una numerica que nos calcula los métodos abstractos de manera numérica y otra gráfica que nos
+calcula los métodos de manera grafica. Las 2 fabricas utilizan las 2 clases abstractas, cada una para su método, esto es lo que mas me costo entender porque pensaba que cada clase abstracta tenia que estar relacionada solo con 1 fabrica.
 
 
 
@@ -640,9 +643,6 @@ class Director:
 ```
 from builder import *
 
-
-import csv
-
 director = Director()
 builder = ConcreteBuilder1()
 director.builder = builder
@@ -738,15 +738,25 @@ if __name__ == "__main__":
         with open('pedidosnuevos.csv', mode='r', newline='') as file:
             reader = csv.reader(file)
             encontrado = False
-            for row in reader:  #tiene que coincidir el nombre de usuario, el nombre y la contraseña para poder verificar que es cliente
+            for row in reader:  #tiene que coincidir el nombre de usuario, el nombre y la contraseña para poder verificar que es el usuario
                 if row and row[0] == nombre_usuario and row[1] == nombre_usuario2 and row[2] == contrasenia:
                     
                             print("¡Bienvenido de nuevo, {}!".format(nombre_usuario))
-                            print("Tus elecciones anteriores son:")
                             #lee y printea los nombre de la columna 0 del csva partir de Masa
-                            print("Selecciones: Masa, Salsa, Ingredientes, coccion,presentacion,maridajes,extras")
+                                #   
+                            ingredientes = row[3:]
+                            masa = ingredientes[0]
+                            salsa = ingredientes[1]
+                            otros_ingredientes = ingredientes[2:-4]
+                            metodo = ingredientes[-4]
+                            presentacion = ingredientes[-3]
+                            maridaje = ingredientes[-2]
+                            ingredientes_extra = ingredientes[-1]
 
-                            print("Tu pizza: "+ " ".join(row[3:]))
+                            resultado = "Tu anterior pedido de pizza:\nMasa: {}\nSalsa: {}\nIngredientes: {}\nMétodo: {}\nPresentación: {}\nMaridaje: {}\nIngredientes extra: {}".format(masa, salsa, "\n".join(otros_ingredientes), metodo, presentacion, maridaje, ingredientes_extra)
+
+                            print(resultado)
+
                             print()
                             encontrado = True
                             print("¿Quieres repetir el pedido?")
@@ -794,7 +804,7 @@ if __name__ == "__main__":
         
 ```
 
-En este ejercicio hemos hecho uso del patrón Builder, mas sencillo de implementar que el Abstract factory,
+En este ejercicio hemos hecho uso del patrón Builder que consta de una clase abstracta, una clase concreta para el builder y una clase para el producto, mas sencillo de implementar que el Abstract factory,
 lo hemos adecuado para la construcción de la pizza en una pizzeria y que de como resultado por terminal la opción de elegir
 cada elemento de la pizza y su resultado final.
 
